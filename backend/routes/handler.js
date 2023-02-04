@@ -30,25 +30,9 @@ router.post('/restaurants', (req, res) => {
   });
 });
 
-// router.post('/restaurants', (req, res) => {
-//   const client = new Client(Config.db);
-//   client.connect();
-//   const menuItems = req.body;
-//   menuItems.forEach(({
-//     restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date,
-//   }) => {
-//     // Tags and nutrients should be space-separated strings
-//     console.log(tags);
-//     console.log(nutrients);
-//     client.query(
-//       'INSERT INTO menuitems VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-//       [restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date],
-//     );
-//   });
-// });
-
 router.post('/terra', (req, res) => {
-  console.log(res.data);
+  console.log(req.body);
+  res.sendStatus(200);
 });
 
 module.exports = router;
