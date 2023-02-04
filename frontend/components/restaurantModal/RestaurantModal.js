@@ -5,6 +5,15 @@ import Config from '../../../backend/config';
 
 export default function RestaurantView(props) {
   const [menuItems, setMenuItems] = useState([]);
+  const [fd, setFd] = useState('food');
+
+  function toggleFd() {
+    if(fd === 'food') {
+      setFd('drink');
+    } else {
+      setFd('food');
+    }
+  }
 
   function getOpeningTime() {
     const ow = new Date(props.openingTime);
@@ -50,7 +59,6 @@ export default function RestaurantView(props) {
 
   useEffect(() => {
     getMenuItems();
-    console.log(menuItems);
   }, []);
 
   const renderItem = ({ item }) => (
@@ -63,7 +71,7 @@ export default function RestaurantView(props) {
       price={item.price}
     />
   );
-
+  if(menuItems) {
   return (
     <View style={[styles.container]}>
       <View style={[styles.item]}>
@@ -107,17 +115,38 @@ export default function RestaurantView(props) {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
       </View>
-      {
-        menuItems ?
-        <FlatList
-          data={menuItems}
+        { fd === 'food' ? 
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', width: 150}}>
+          <Text style={[{textDecorationLine: 'underline'}, styles.selectedItem]}>Food</Text>
+          <Text style={{textDecorationLine: 'underline'}} onPress={toggleFd}>Drinks</Text>
+        </View>
+        : 
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', width: 150}}>
+        <Text style={{textDecorationLine: 'underline'}} onPress={toggleFd}>Food</Text>
+        <Text style={[{textDecorationLine: 'underline'}, styles.selectedItem]}>Drinks</Text>
+        </View>
+        }
+        {
+          fd === "food" ?
+          <FlatList
+          data={menuItems.filter(item => item.category === "Food")}
           renderItem={renderItem}
           keyExtractor={item => item.name}
           style={styles.fl}
-        /> : <View />
-      }
+        /> :
+        <FlatList
+          data={menuItems.filter(item => item.category === "Drink")}
+          renderItem={renderItem}
+          keyExtractor={item => item.name}
+          style={styles.fl}
+        /> 
+        }
     </View>
-  );
+  ) } else {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -194,5 +223,8 @@ const styles = StyleSheet.create({
   },
   tagst: {
     fontSize: 10
+  },
+  selectedItem: {
+    fontWeight: 'bold'
   }
 })
