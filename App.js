@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
+import Modal from 'react-native-modal';
 import {Feather, Ionicons} from 'react-native-vector-icons';
 import NavBar from './frontend/components/NavBar';
 import Recommendation from './frontend/pages/Recommendation';
@@ -8,7 +9,6 @@ import Staff from './frontend/pages/Staff';
 import Friends from './frontend/pages/Friends';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export default function App() {
   const [currPage, setCurrPage] = useState('home');
@@ -32,6 +32,20 @@ export default function App() {
           <Feather name="settings" size={windowWidth / 15} style={styles.settingsIcon} />
         </TouchableOpacity>
       </View>
+      <Modal
+        propagateSwipe={true}
+        isVisible={visible}
+        coverScreen
+        onSwipeComplete={toggleModal}
+        swipeDirection={['left', 'right']}
+        backdropOpacity={0.6}
+      >
+        <View style={styles.modal}>
+          <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
+            <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'staff' ? <Staff /> : <Friends />}
       <View style={styles.navbar}>
         <NavBar setCurrView={changePage} currPage={currPage} />
