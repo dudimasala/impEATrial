@@ -1,7 +1,8 @@
 import {
-  StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity, Button,
+  StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity
 } from 'react-native';
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {Feather, Ionicons, MaterialCommunityIcons} from 'react-native-vector-icons';
 import Modal from 'react-native-modal';
 import axios from 'axios';
@@ -15,16 +16,66 @@ import Search from "./frontend/components/preferences/Search";
 import Staff from "./frontend/pages/Staff";
 import Friends from "./frontend/pages/Friends"
 import Account from "./frontend/components/Account"
+const initPrefData = require('./backend/json/preferencestags.json');
+const initRestData = require('./backend/json/restaurantTags.json');
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function App() {
+  useEffect(() => {
+    async function storePrefData() {
+      try {
+        const prefTags = await AsyncStorage.getItem('@preferenceTags');
+        if(prefTags === null) {
+          try {
+            AsyncStorage.setItem('@preferenceTags', JSON.stringify(initPrefData));
+            let checkedItems = [];
+            for(let i = 0; i < initPrefData; i++) {
+              checkedItems.push(initPrefData[i].checked);
+            }
+            setChecked(checkedItems);
+          } catch(e) {
+            alert('Server Side Error');
+          }
+        } else {
+          let checkedItems = [];
+          const parsedPrefTags = JSON.parse(prefTags);
+          for(let i = 0; i < parsedPrefTags; i++) {
+            checkedItems.push(parsedPrefTags[i].checked);
+          }
+          setChecked(checkedItems);
+        }
+      } catch(e) {
+        alert("Server-Side Error")
+      }
+    }
+
+    async function storeRestData() {
+      try {
+        const restTags = await AsyncStorage.getItem('@restaurantTags')
+        if(restTags === null) {
+          try {
+            AsyncStorage.setItem('@restaurantTags', JSON.stringify(initRestData));
+          } catch(e) {
+            alert('Server Side Error');
+          }
+        }
+      } catch(e) {
+        alert("Server-Side Error")
+      }
+    }
+    storePrefData();
+    storeRestData();
+  }, []);
+
+
   const [currPage, setCurrPage] = useState('friends');
   const changePage = (newPage) => {
     setCurrPage(newPage);
   };
   const [visible, setVisible] = useState(false);
   const [visibleAcc, setVisibleAcc] = useState(false);
+  const [checked, setChecked] = useState();
 
   const toggleModal = () => {
     setVisible(!visible);
@@ -33,6 +84,12 @@ export default function App() {
   const toggleModalAccount = () => {
     setVisibleAcc(!visibleAcc);
   };
+
+  const changeChecked = (id) => {
+    const newArr = checked;
+    newArr[id - 1] = !newArr[id - 1]
+    setChecked(newArr);
+  }
 
   // Props for account preferences
   const [insta, onChangeInsta] = useState('');
@@ -71,7 +128,7 @@ export default function App() {
     const result = await WebBrowser.openBrowserAsync(url);
     console.log(result);
   }
-
+  if(checked) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -115,7 +172,10 @@ export default function App() {
             gluten = {gluten}
             onChangeGluten = {onChangeGluten}
           />
-          <Search />
+          <Search
+            checked = {checked}
+            changeChecked = {changeChecked}
+           />
         </View>
       </Modal>
 
@@ -155,6 +215,13 @@ export default function App() {
       </View>
     </SafeAreaView>
   );
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+         <Text>Loading...</Text>
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

@@ -1,26 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./search/Item"; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const DATA = require('../../../backend/json/preferencestags.json');
 // Could use AsyncStorage for this to reduce database reads and writes.
-const DATA = require("../../../backend/json/preferencestags.json");
 // Could use AsyncStorage for this to reduce database reads and writes.
 
-export default function Search() {
-  const [data, setData] = useState(DATA);
+export default function Search(props) {
+  useEffect(() => {
+    async function getData() {
+      try {
+        const prefTags = JSON.parse(await AsyncStorage.getItem('@preferenceTags'));
+        if(prefTags !== null) {
+          setFullData(prefTags);
+          setData(prefTags);
+        } else {
+          alert("Error Fetching Data");
+        }
+      } catch(e) {
+        alert("Error Fetching Data")
+      }
+    }
+    if(!bootedUp) {
+      getData();
+      setBootedUp(true);
+    }
+  })
+
+  const [fullData, setFullData] = useState();
+  const [data, setData] = useState();
   const [userInput, setUserInput] = useState("");
+  const [bootedUp, setBootedUp] = useState(false);
+
 
   const changeText = (input) => {
     setUserInput(input);
     if(input) {
       input = input.toLowerCase().replace(/\s+/g, '');
     }
-    setData(DATA.filter(item => item ? item.name.toLowerCase().startsWith(input) : false));
+    setData(fullData.filter(item => item ? item.name.toLowerCase().startsWith(input) : false));
   } 
 
   const renderItem = ({item}) => {
     return (
-    <Item checked={item.checked} name={item.name} type={item.type} id={item.id} />
+    <Item checked={props.checked[item.id-1]} name={item.name} type={item.type} id={item.id} changeChecked={props.changeChecked} />
     );
   };
 
@@ -33,7 +57,8 @@ export default function Search() {
             onClearPress={() => changeText("")}
         />
         {
-        data.length !== 0 ? 
+        data && props.checked && fullData ?
+        (data.length !== 0 ? 
         <FlatList
             data={data}
             renderItem={renderItem}
@@ -43,6 +68,9 @@ export default function Search() {
         :
         <View style={styles.nrf}>
           <Text>No results found</Text>
+        </View>) :
+        <View style={styles.nrf}>
+          <Text>Loading...</Text>
         </View>
         }
     </View> 
