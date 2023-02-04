@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchBar from "react-native-dynamic-search-bar";
-import Item from "./search/Item"; // actually need to use database for this (checkboxes) 
+import Item from "./search/Item"; 
 // Could use AsyncStorage for this to reduce database reads and writes.
 const DATA = [
     {

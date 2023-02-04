@@ -8,6 +8,7 @@ import Restaurants from './frontend/pages/Restaurants';
 import Staff from './frontend/pages/Staff';
 import Friends from './frontend/pages/Friends';
 import Search from './frontend/components/preferences/Search';
+import Preferences from './frontend/components/preferences/Preferences';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -45,6 +46,7 @@ export default function App() {
           <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
             <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
           </TouchableOpacity>
+          <Preferences />
           <Search />
         </View>
       </Modal>
