@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
-
-//only weekday right now
+import { View, Text, StyleSheet, FlatList, Image} from "react-native";
+import Dish from './Dish';
+const DATA = require('../../../backend/json/menuitems.json');
 
 export default function RestaurantView(props) {
   function getOpeningTime() {
-    const ow = new Date(props.openingTimeWeekday);
+    const ow = new Date(props.openingTime);
     let hours = ow.getHours();
     let minutes = ow.getMinutes();
     if(parseInt(hours) < 10) {
@@ -18,7 +18,7 @@ export default function RestaurantView(props) {
   }
 
   function getClosingTime() {
-    const ow = new Date(props.closingTimeWeekday);
+    const ow = new Date(props.closingTime);
     let hours = ow.getHours();
     let minutes = ow.getMinutes();
     if(parseInt(hours) < 10) {
@@ -30,20 +30,22 @@ export default function RestaurantView(props) {
     return hours + ":" + minutes;
   }
 
-  function pressedRest() {
-    props.getModalData(props.restaurant, props.openingTimeWeekday, props.closingTimeWeekday, props.building, props.waitTime, props.tag1, props.tag2, props.tag3, props.tag4, props.image);
-    props.toggleModal();
-  }
+  const renderItem = ({item}) => {
+    return (
+        <Dish />
+    )
+  };
 
   return (
-    <TouchableOpacity style={[styles.item]} onPress={pressedRest}>
+    <View style={[styles.container]}>
+    <View style={[styles.item]}>
         <Image source = {props.image} style = {styles.image}/>
         <View style={styles.totalR}>
         <View style={styles.overlay}>
         <View style={styles.sc}>
           <Text style = {[styles.name]}>
             {props.restaurant}
-            </Text>
+          </Text>
        </View>
         <View style={styles.restInfo}>
         <Text style = {styles.rest}>
@@ -73,17 +75,29 @@ export default function RestaurantView(props) {
         </View>
         </View>
         </View>
-    </TouchableOpacity>
+    </View>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+    </View>
+    <FlatList
+            data={DATA.filter(item => item.fooddrink === "Food")}
+            renderItem={renderItem}
+            keyExtractor={item => item.name}
+            style={styles.fl}
+    />
+    </View>
   )
 }
 
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center'
+  },
   item: {
     paddingHorizontal: 8,
-    backgroundColor: "#e6e6e6",
     height: 100,
-    width: 350,
+    width: 362,
     marginVertical: 8,
     marginHorizontal: 8,
     borderRadius: 10,

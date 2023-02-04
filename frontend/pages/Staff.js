@@ -5,17 +5,6 @@ import InsertMenu from '../components/staff/insertMenu';
 
 
 export default function Staff() {
-  const [scr, setScr] = useState(false);
-  const [hbar, setHbar] = useState(false);
-  const [kimiko, setKimiko] = useState(false);
-  const [lib, setLib] = useState(false);
-  const [east, setEast] = useState(false);
-  const [neo, setNeo] = useState(false);
-  const [loud, setLoud] = useState(false);
-  const [roast, setRoast] = useState(false);
-  const [star, setStar] = useState(false);
-  const [col, setCol] = useState(false);
-
   return (
     <View>
         <Text style = {styles.title}>
