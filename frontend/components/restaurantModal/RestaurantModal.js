@@ -53,18 +53,16 @@ export default function RestaurantView(props) {
     console.log(menuItems);
   }, []);
 
-  const renderItem = ({ item }) => {
-    return (
-      <Dish
-        restaurant={item.restaurant}
-        item={item.item}
-        glutenFree={item.gluten_free}
-        vegetarian={item.vegetarian}
-        vegan={item.vegan}
-        price={item.price}
-      />
-    );
-  };
+  const renderItem = ({ item }) => (
+    <Dish
+      restaurant={item.restaurant}
+      item={item.item}
+      glutenFree={item.gluten_free}
+      vegetarian={item.vegetarian}
+      vegan={item.vegan}
+      price={item.price}
+    />
+  );
 
   return (
     <View style={[styles.container]}>
