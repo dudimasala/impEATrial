@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./search/Item"; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Could use AsyncStorage for this to reduce database reads and writes.
-const DATA = require("../../../backend/json/preferencestags.json");
 // Could use AsyncStorage for this to reduce database reads and writes.
 
 export default function Search() {
-  const [data, setData] = useState(DATA);
+  useEffect(() => {
+    async function getData() {
+      try {
+        const prefTags = JSON.parse(await AsyncStorage.getItem('@preferenceTags'));
+        if(prefTags !== null) {
+          setData(prefTags);
+        } else {
+          alert("Error Fetching Data");
+        }
+      } catch(e) {
+        alert("Error Fetching Data")
+      }
+    }
+    getData();
+  })
+
+
+  const [data, setData] = useState();
   const [userInput, setUserInput] = useState("");
 
   const changeText = (input) => {
@@ -33,7 +50,8 @@ export default function Search() {
             onClearPress={() => changeText("")}
         />
         {
-        data.length !== 0 ? 
+        data ?
+        (data.length !== 0 ? 
         <FlatList
             data={data}
             renderItem={renderItem}
@@ -43,6 +61,9 @@ export default function Search() {
         :
         <View style={styles.nrf}>
           <Text>No results found</Text>
+        </View>) :
+        <View style={styles.nrf}>
+          <Text>Loading...</Text>
         </View>
         }
     </View> 

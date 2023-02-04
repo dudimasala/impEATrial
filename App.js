@@ -1,7 +1,8 @@
 import {
-  StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity, Button,
+  StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity
 } from 'react-native';
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {Feather, Ionicons, MaterialCommunityIcons} from 'react-native-vector-icons';
 import Modal from 'react-native-modal';
 import axios from 'axios';
@@ -15,10 +16,47 @@ import Search from "./frontend/components/preferences/Search";
 import Staff from "./frontend/pages/Staff";
 import Friends from "./frontend/pages/Friends"
 import Account from "./frontend/components/Account"
+const initPrefData = require('./backend/json/preferencestags.json');
+const initRestData = require('./backend/json/restaurantTags.json');
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function App() {
+  useEffect(() => {
+    async function storePrefData() {
+      try {
+        const prefTags = await AsyncStorage.getItem('@preferenceTags')
+        if(prefTags === null) {
+          try {
+            AsyncStorage.setItem('@preferenceTags', JSON.stringify(initPrefData));
+          } catch(e) {
+            alert('Server Side Error');
+          }
+        }
+      } catch(e) {
+        alert("Server-Side Error")
+      }
+    }
+
+    async function storeRestData() {
+      try {
+        const restTags = await AsyncStorage.getItem('@restaurantTags')
+        if(restTags === null) {
+          try {
+            AsyncStorage.setItem('@restaurantTags', JSON.stringify(initRestData));
+          } catch(e) {
+            alert('Server Side Error');
+          }
+        }
+      } catch(e) {
+        alert("Server-Side Error")
+      }
+    }
+    storePrefData();
+    storeRestData();
+  }, []);
+
+
   const [currPage, setCurrPage] = useState('friends');
   const changePage = (newPage) => {
     setCurrPage(newPage);
