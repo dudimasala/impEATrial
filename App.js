@@ -1,27 +1,50 @@
+import {
+  StyleSheet, Text, View, Dimensions, SafeAreaView, TouchableOpacity, Button,
+} from 'react-native';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
+import {Feather, Ionicons, MaterialCommunityIcons} from 'react-native-vector-icons';
 import Modal from 'react-native-modal';
-import {Feather, Ionicons} from 'react-native-vector-icons';
+import Preferences from './frontend/components/preferences/Preferences';
 import NavBar from './frontend/components/NavBar';
 import Recommendation from './frontend/pages/Recommendation';
 import Restaurants from './frontend/pages/Restaurants';
-import Staff from './frontend/pages/Staff';
-import Friends from './frontend/pages/Friends';
-import Search from './frontend/components/preferences/Search';
-import Preferences from './frontend/components/preferences/Preferences';
+import Search from "./frontend/components/preferences/Search";
+import Staff from "./frontend/pages/Staff";
+import Friends from "./frontend/pages/Friends"
+import Account from "./frontend/components/Account"
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function App() {
-  const [currPage, setCurrPage] = useState('home');
+  const [currPage, setCurrPage] = useState('friends');
   const changePage = (newPage) => {
     setCurrPage(newPage);
   };
-
   const [visible, setVisible] = useState(false);
+  const [visibleAcc, setVisibleAcc] = useState(false);
+
   const toggleModal = () => {
     setVisible(!visible);
   };
+
+  const toggleModalAccount = () => {
+    setVisibleAcc(!visibleAcc);
+  };
+
+  // Props for account preferences 
+  const [insta, onChangeInsta] = useState('');
+  const [phone, onChangeNumber] = useState('');
+  const [course, onChangeCourse] = useState('');
+  const [year, onChangeYear] = useState('');
+  const [pronouns, onChangePronouns] = useState('');
+  const [gender, onChangeGender] = useState('');
+
+  // Props for taste preferences (excluding tags)
+  const [price, onChangePrice] = useState(0);
+  const [waittime, onChangeTime] = useState(0);
+  const [vegan, onChangeVegan] = useState(false);
+  const [veg, onChangeVeg] = useState(false);
+  const [gluten, onChangeGluten] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,12 +53,17 @@ export default function App() {
           <Ionicons name = 'fast-food-outline' size = {25}/>
           <Text style={styles.label}> impEATrial</Text>
         </View>
-        <TouchableOpacity onPress={toggleModal}>
-          <Feather name="settings" size={windowWidth / 15} style={styles.settingsIcon} />
-        </TouchableOpacity>
+        <View style = {styles.options}>
+          <TouchableOpacity onPress={toggleModalAccount} style = {styles.spacing}>
+            <MaterialCommunityIcons name="account-box-outline" size={windowWidth / 13} style={styles.settingsIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleModal}>
+            <Feather name="settings" size={windowWidth / 15} style={styles.settingsIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
       <Modal
-        propagateSwipe
+        propagateSwipe={true}
         isVisible={visible}
         coverScreen
         onSwipeComplete={toggleModal}
@@ -46,11 +74,53 @@ export default function App() {
           <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
             <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
           </TouchableOpacity>
-          <Preferences />
-          <Search />
+          <Preferences 
+            price = {price}
+            onChangePrice = {onChangePrice}
+            waittime = {waittime}
+            onChangeTime = {onChangeTime}
+            vegan = {vegan}
+            onChangeVegan = {onChangeVegan}
+            veg = {veg}
+            onChangeVeg = {onChangeVeg}
+            gluten = {gluten}
+            onChangeGluten = {onChangeGluten}
+          />
+          <Search/>
         </View>
       </Modal>
-      {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'staff' ? <Staff /> : <Friends />}
+
+      <Modal
+        propagateSwipe={true}
+        isVisible={visibleAcc}
+        coverScreen
+        onSwipeComplete={toggleModalAccount}
+        swipeDirection={['left', 'right']}
+        backdropOpacity={0.6}
+      >
+        <View style={styles.modal}>
+          <TouchableOpacity onPress={toggleModalAccount} style = {styles.closeButtonContainer}>
+            <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
+          </TouchableOpacity>
+          <Account 
+            onChangeInsta={onChangeInsta} 
+            onChangeNumber = {onChangeNumber} 
+            onChangeCourse = {onChangeCourse} 
+            onChangeYear = {onChangeYear}
+            insta = {insta}
+            phone = {phone}
+            course = {course}
+            year = {year}
+            pronouns = {pronouns}
+            onChangePronouns = {onChangePronouns}
+            gender = {gender}
+            onChangeGender = {onChangeGender}
+            />
+        </View>
+      </Modal>
+
+      {/* if/else based on navbar input recommendation / restaurants */}
+      {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends/> : <Staff />}
       <View style={styles.navbar}>
         <NavBar setCurrView={changePage} currPage={currPage} />
       </View>
@@ -96,15 +166,24 @@ const styles = StyleSheet.create({
     borderTopRightRadius:30,
     borderBottomRightRadius:30,
     borderBottomLeftRadius:30,
-    overflow: 'hidden',
+    overflow: "hidden"
   },
-  closeButtonContainer: { 
+  closeButtonContainer : { 
     ...StyleSheet.absoluteFillObject,
     top: 15,
-    left: 310,
+    left: 310
   },
-  titleWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+  titleWrap : {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  options : {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  
+  },
+  spacing: {
+    marginHorizontal: 10
   }
 });

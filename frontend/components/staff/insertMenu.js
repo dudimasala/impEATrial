@@ -9,7 +9,12 @@ export default function InsertMenu() {
 
    const changeText = (input) => {
     setUserInput(input);
+    
   }
+  const [foodTag1, setft1] = useState("Food?");
+  const [foodTag2, setft2] = useState("Ingredient?");
+  const [cuisineTag, setct] = useState("Cuisine?");
+  const [flavourTag, setflt] = useState("Flavour?");
 
   return (
     <View>

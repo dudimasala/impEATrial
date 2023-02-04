@@ -2,26 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./staffItem";
-const DATA = [
-    {
-        "name": "SCR Restaurant",
-        "checked": false,
-        "image": "../../../assets/scr.png",
-        "id": 1
-    },
-    {
-        "name": "h-Bar",
-        "checked": false,
-        "image": "../../../assets/h-bar.png",
-        "id": 2
-    },
-    {
-        "name": "Kimiko",
-        "checked": false,
-        "image": "../../../assets/kimiko.png",
-        "id": 3
-    }
-]
+const DATA = require("../../../backend/json/restaurantTags.json");
 
 export default function StaffRestScroll() {
   const [data, setData] = useState(DATA);

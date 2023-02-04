@@ -5,12 +5,17 @@ import {Entypo, FontAwesome5} from 'react-native-vector-icons';
 import checkbox from '../../assets/icon-checkbox.png';
 import checkboxChecked from '../../assets/icon-checkbox-checked.png';
 
-export default function Preferences() {
-  const [price,setPrice] = useState(0);
-  const [time, setTime] = useState(0);
-  const [checkedVeg, setChecked1] = useState(false);
-  const [checkedVegan, setChecked2] = useState(false);
-  const [checkedGluten, setChecked3] = useState(false);
+export default function Preferences(props) {
+  const price = props.price;
+  const setPrice = props.onChangePrice;
+  const time = props.waittime;
+  const setTime = props.onChangeTime;
+  const checkedVeg = props.veg;
+  const setChecked1 = props.onChangeVeg;
+  const checkedVegan = props.vegan;
+  const setChecked2 = props.onChangeVegan;
+  const checkedGluten = props.gluten;
+  const setChecked3 = props.onChangeGluten;
 
   return (
     <View>
@@ -28,11 +33,12 @@ export default function Preferences() {
       </View>
       <Slider
         style={{width: 300, height: 40}}
+        value = {price}
         minimumValue={0}
         maximumValue={50}
         minimumTrackTintColor="#000000"
         maximumTrackTintColor="#d3d3d3"
-        onValueChange = {(value) => setPrice(value)}
+        onSlidingComplete = {(value) => setPrice(value)}
       />
       <View style= {styles.labelView}>
         <Text style = {styles.label}> 
@@ -44,11 +50,12 @@ export default function Preferences() {
       </View>
       <Slider
         style={{width: 300, height: 40}}
+        value = {time}
         minimumValue={0}
         maximumValue={60}
         minimumTrackTintColor="#000000"
         maximumTrackTintColor="#d3d3d3"
-        onValueChange = {(value) => setTime(value)}
+        onSlidingComplete = {(value) => setTime(value)}
       />
       <View>
         <TouchableOpacity onPress={() => setChecked1(!checkedVeg)} style={[styles.item]}>

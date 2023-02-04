@@ -3,43 +3,9 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./search/Item"; 
 // Could use AsyncStorage for this to reduce database reads and writes.
-const DATA = [
-    {
-        "name": "Sweet",
-        "type": "flavour",
-        "checked": false,
-        "id": 1
-    },
-    {
-        "name": "Savory",
-        "type": "flavour",
-        "checked": false,
-        "id": 2
-    },
-    {
-        "name": "Bitter",
-        "type": "flavour",
-        "checked": false,
-        "id": 3
-    },
-    {
-        "name": "Sour",
-        "type": "flavour",
-        "checked": false,
-        "id": 4
-    },
-    {
-        "name": "Crispy",
-        "type": "flavour",
-        "checked": false,
-        "id": 5
-    },
-    {
-        "name": "Spicy",
-        "type": "flavour",
-        "checked": false,
-        "id": 6
-    }]
+const DATA = require("../../../backend/json/preferencestags.json");
+// Could use AsyncStorage for this to reduce database reads and writes.
+
 export default function Search() {
   const [data, setData] = useState(DATA);
   const [userInput, setUserInput] = useState("");
