@@ -6,7 +6,10 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "client": "expo start --tunnel",
+    "server": "nodemon ./backend/server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",

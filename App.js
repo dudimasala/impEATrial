@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import NavBar from "./frontend/components/NavBar";
-import Recommendation from "./frontend/pages/Recommendation";
-import Restaurants from "./frontend/pages/Restaurants";
-import Staff from "./frontend/pages/Staff";
+import { StyleSheet, View, SafeAreaView } from 'react-native';
+import NavBar from './frontend/components/NavBar';
+import Recommendation from './frontend/pages/Recommendation';
+import Restaurants from './frontend/pages/Restaurants';
+import Staff from './frontend/pages/Staff';
 
 
 export default function App() {
