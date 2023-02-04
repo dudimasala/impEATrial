@@ -32,9 +32,14 @@ async function insertRestaurant({
   closingTimeWeekday,
   openingTimeWeekend,
   closingTimeWeekend,
-  tags,
+  // Top four tags of food items offered at restaurant
+  tag1,
+  tag2,
+  tag3,
+  tag4,
 }) {
   const [latitude, longitude] = location.split(',').map((s) => parseFloat(s.trim()));
+  const tagsCommaSeparated = [tag1, tag2, tag3, tag4].join(', ');
   const times = [
     openingTimeWeekday,
     closingTimeWeekday,
@@ -52,7 +57,7 @@ async function insertRestaurant({
              CASE $7 WHEN '' THEN NULL ELSE CAST($7 AS TIME) END,
              $8
       WHERE NOT EXISTS (SELECT * FROM restaurants WHERE restaurant = $1)`,
-    [restaurant, latitude, longitude, ...times, tags],
+    [restaurant, latitude, longitude, ...times, tagsCommaSeparated],
   );
 }
 
@@ -60,7 +65,7 @@ function stringToArray(string) {
   if (string === undefined) {
     return '';
   }
-  return string.slice(1, string.length - 1).split(', ').map((elem) => elem.slice(1, elem.length - 1)).join(' ');
+  return string.slice(1, string.length - 1).split(', ').map((elem) => elem.slice(1, elem.length - 1)).join(', ');
 }
 
 async function insertRestaurants() {
@@ -71,8 +76,8 @@ async function insertRestaurants() {
 async function insertMenuItem({
   restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date,
 }) {
-  const tagsSpaceSeparated = stringToArray(tags);
-  const nutrientsSpaceSeparated = stringToArray(nutrients);
+  const tagsCommaSeparated = stringToArray(tags);
+  const nutrientsCommaSeparated = stringToArray(nutrients);
   client.query(
     `INSERT INTO menuitems
      SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
@@ -85,8 +90,8 @@ async function insertMenuItem({
       glutenFree,
       vegetarian,
       vegan,
-      tagsSpaceSeparated,
-      nutrientsSpaceSeparated,
+      tagsCommaSeparated,
+      nutrientsCommaSeparated,
       date,
     ],
   );
@@ -107,10 +112,19 @@ async function printMenuItems() {
   console.log(menuItemsDB.rows);
 }
 
+function deleteEverything() {
+  client.query('DELETE FROM menuitems');
+  client.query('DELETE FROM restaurants');
+}
+
 initDB();
 
-insertRestaurants();
-insertMenuItems();
+// deleteEverything();
+
+// insertRestaurants();
+// insertMenuItems();
+
+// console.log('Everything inserted');
 
 // printRestaurants();
 // printMenuItems();

@@ -1,6 +1,6 @@
 [
     {
-        "restaurants": "SCR Restaurant",
+        "restaurant": "SCR Restaurant",
         "location": "51.49866462142452, -0.17741471717586324",
         "openingTimeWeekday": "1899-12-30T11:45:00.000Z",
         "closingTimeWeekday": "1899-12-30T14:30:00.000Z",
@@ -15,7 +15,7 @@
         "id": 1
     },
     {
-        "restaurants": "h-Bar",
+        "restaurant": "h-Bar",
         "location": "51.49862450987213, -0.17834356017180142",
         "openingTimeWeekday": "1899-12-30T11:45:00.000Z",
         "closingTimeWeekday": "1899-12-30T14:30:00.000Z",
@@ -30,7 +30,7 @@
         "id": 2
     },
     {
-        "restaurants": "Kimiko",
+        "restaurant": "Kimiko",
         "location": "51.498655428479466, -0.17668342972058876",
         "openingTimeWeekday": "1899-12-30T10:00:00.000Z",
         "closingTimeWeekday": "1899-12-30T15:00:00.000Z",
@@ -45,7 +45,7 @@
         "id": 3
     },
     {
-        "restaurants": "Library Cafe",
+        "restaurant": "Library Cafe",
         "location": "51.49810022353172, -0.1778334272604531",
         "openingTimeWeekday": "1899-12-30T08:00:00.000Z",
         "closingTimeWeekday": "1899-12-30T23:00:00.000Z",
@@ -60,7 +60,7 @@
         "id": 4
     },
     {
-        "restaurants": "Eastside Bar & Restaurant",
+        "restaurant": "Eastside Bar & Restaurant",
         "location": "51.498972140486515, -0.17209824301878499",
         "openingTimeWeekday": "1899-12-30T12:00:00.000Z",
         "closingTimeWeekday": "1899-12-30T22:00:00.000Z",
@@ -75,7 +75,7 @@
         "id": 5
     },
     {
-        "restaurants": "Neo Pizza & Pasta",
+        "restaurant": "Neo Pizza & Pasta",
         "location": "51.49874319703121, -0.17712837931705072",
         "openingTimeWeekday": "1899-12-30T11:30:00.000Z",
         "closingTimeWeekday": "1899-12-30T14:30:00.000Z",
@@ -90,7 +90,7 @@
         "id": 6
     },
     {
-        "restaurants": "The Loud Bird",
+        "restaurant": "The Loud Bird",
         "location": "51.49781025404703, -0.1766259731406283",
         "openingTimeWeekday": "1899-12-30T11:45:00.000Z",
         "closingTimeWeekday": "1899-12-30T14:30:00.000Z",
@@ -105,7 +105,7 @@
         "id": 7
     },
     {
-        "restaurants": "The Roastery",
+        "restaurant": "The Roastery",
         "location": "51.49869060849178, -0.17782841576274502",
         "openingTimeWeekday": "1899-12-30T11:45:00.000Z",
         "closingTimeWeekday": "1899-12-30T14:30:00.000Z",
@@ -120,7 +120,7 @@
         "id": 8
     },
     {
-        "restaurants": "Starbucks",
+        "restaurant": "Starbucks",
         "location": "51.49878421578054, -0.17682847817200423",
         "openingTimeWeekday": "1899-12-30T09:00:00.000Z",
         "closingTimeWeekday": "1899-12-30T16:00:00.000Z",
@@ -135,7 +135,7 @@
         "id": 9
     },
     {
-        "restaurants": "College Cafe",
+        "restaurant": "College Cafe",
         "location": "51.49897444766573, -0.17486086743928694",
         "openingTimeWeekday": "1899-12-30T08:30:00.000Z",
         "closingTimeWeekday": "1899-12-30T18:00:00.000Z",

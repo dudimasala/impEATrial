@@ -4,6 +4,9 @@ import {
 import React, { useState } from 'react';
 import {Feather, Ionicons, MaterialCommunityIcons} from 'react-native-vector-icons';
 import Modal from 'react-native-modal';
+import axios from 'axios';
+import * as WebBrowser from 'expo-web-browser';
+
 import Preferences from './frontend/components/preferences/Preferences';
 import NavBar from './frontend/components/NavBar';
 import Recommendation from './frontend/pages/Recommendation';
@@ -31,7 +34,7 @@ export default function App() {
     setVisibleAcc(!visibleAcc);
   };
 
-  // Props for account preferences 
+  // Props for account preferences
   const [insta, onChangeInsta] = useState('');
   const [phone, onChangeNumber] = useState('');
   const [course, onChangeCourse] = useState('');
@@ -46,14 +49,40 @@ export default function App() {
   const [veg, onChangeVeg] = useState(false);
   const [gluten, onChangeGluten] = useState(false);
 
+  // Terra connect
+  async function connect() {
+    const options = {
+      method: 'POST',
+      url: 'https://api.tryterra.co/v2/auth/generateWidgetSession',
+      headers: {
+        accept: 'application/json',
+        'dev-id': 'testingTerra',
+        'content-type': 'application/json',
+        'x-api-key': 'ussv5SAQ53a1nNTxsMr9G41zj2KUhYMk5eDU1hjG',
+      },
+      data: {
+        reference_id: 'angusleung',
+        providers: 'GARMIN,WITHINGS,FITBIT,GOOGLE,OURA,WAHOO,PELOTON,ZWIFT,TRAININGPEAKS,FREESTYLELIBRE,DEXCOM,COROS,HUAWEI,OMRON,RENPHO,POLAR,SUUNTO,EIGHT,APPLE,CONCEPT2,WHOOP,IFIT,TEMPO,CRONOMETER,FATSECRET,NUTRACHECK,UNDERARMOUR',
+        language: 'en',
+      },
+    };
+    const { data } = await axios.request(options);
+    const { url } = data;
+    const result = await WebBrowser.openBrowserAsync(url);
+    console.log(result);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <View style = {styles.titleWrap}>
-          <Ionicons name = 'fast-food-outline' size = {25}/>
+        <View style={styles.titleWrap}>
+          <Ionicons name='fast-food-outline' size = {25}/>
           <Text style={styles.label}> impEATrial</Text>
         </View>
         <View style = {styles.options}>
+          <TouchableOpacity onPress={() => connect()} style={styles.spacing}>
+            <MaterialCommunityIcons name="link" size={windowWidth / 13} style={styles.settingsIcon} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={toggleModalAccount} style = {styles.spacing}>
             <MaterialCommunityIcons name="account-box-outline" size={windowWidth / 13} style={styles.settingsIcon} />
           </TouchableOpacity>
@@ -74,7 +103,8 @@ export default function App() {
           <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
             <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
           </TouchableOpacity>
-          <Preferences 
+          <Search />
+          <Preferences
             price = {price}
             onChangePrice = {onChangePrice}
             waittime = {waittime}
@@ -86,7 +116,6 @@ export default function App() {
             gluten = {gluten}
             onChangeGluten = {onChangeGluten}
           />
-          <Search/>
         </View>
       </Modal>
 

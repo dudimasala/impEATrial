@@ -28,7 +28,7 @@ router.get('/restaurants', (req, res) => {
   console.log(rows);
 });
 
-router.post('/', (req, res) => {
+router.post('/menuitems', (req, res) => {
   const client = new Client(Config.db);
   client.connect();
   const menuItems = req.body;
@@ -43,6 +43,10 @@ router.post('/', (req, res) => {
       [restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date],
     );
   });
+});
+
+router.post('/terra', (req, res) => {
+  console.log(res.data);
 });
 
 module.exports = router;
