@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
   closeButtonContainer : { 
     ...StyleSheet.absoluteFillObject,
     top: 15,
-    left: 310
+    left: 310,
+    zIndex: 1
   },
   settingsIcon: {
     marginBottom: 10,
