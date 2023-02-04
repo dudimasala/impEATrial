@@ -25,13 +25,25 @@ export default function App() {
   useEffect(() => {
     async function storePrefData() {
       try {
-        const prefTags = await AsyncStorage.getItem('@preferenceTags')
+        const prefTags = await AsyncStorage.getItem('@preferenceTags');
         if(prefTags === null) {
           try {
             AsyncStorage.setItem('@preferenceTags', JSON.stringify(initPrefData));
+            let checkedItems = [];
+            for(let i = 0; i < initPrefData; i++) {
+              checkedItems.push(initPrefData[i].checked);
+            }
+            setChecked(checkedItems);
           } catch(e) {
             alert('Server Side Error');
           }
+        } else {
+          let checkedItems = [];
+          const parsedPrefTags = JSON.parse(prefTags);
+          for(let i = 0; i < parsedPrefTags; i++) {
+            checkedItems.push(parsedPrefTags[i].checked);
+          }
+          setChecked(checkedItems);
         }
       } catch(e) {
         alert("Server-Side Error")
@@ -63,6 +75,7 @@ export default function App() {
   };
   const [visible, setVisible] = useState(false);
   const [visibleAcc, setVisibleAcc] = useState(false);
+  const [checked, setChecked] = useState();
 
   const toggleModal = () => {
     setVisible(!visible);
@@ -71,6 +84,12 @@ export default function App() {
   const toggleModalAccount = () => {
     setVisibleAcc(!visibleAcc);
   };
+
+  const changeChecked = (id) => {
+    const newArr = checked;
+    newArr[id - 1] = !newArr[id - 1]
+    setChecked(newArr);
+  }
 
   // Props for account preferences
   const [insta, onChangeInsta] = useState('');
@@ -109,7 +128,7 @@ export default function App() {
     const result = await WebBrowser.openBrowserAsync(url);
     console.log(result);
   }
-
+  if(checked) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -153,7 +172,10 @@ export default function App() {
             gluten = {gluten}
             onChangeGluten = {onChangeGluten}
           />
-          <Search />
+          <Search
+            checked = {checked}
+            changeChecked = {changeChecked}
+           />
         </View>
       </Modal>
 
@@ -193,6 +215,13 @@ export default function App() {
       </View>
     </SafeAreaView>
   );
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+         <Text>Loading...</Text>
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

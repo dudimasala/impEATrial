@@ -6,8 +6,8 @@ import checkboxChecked from '../../../assets/icon-checkbox-checked.png';
 
 export default function Item(props) {
   const [checked, setChecked] = useState(props.checked);
-
   const clickedBox = () => {
+    props.changeChecked(props.id);
     setChecked(!checked);
   }
 
