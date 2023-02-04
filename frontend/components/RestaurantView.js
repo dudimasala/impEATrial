@@ -53,16 +53,16 @@ export default function RestaurantView(props) {
         </View>
         </View>
         <View style = {styles.tagsHolder}>
-        <View style = {styles.tags}>
+        <View style = {[styles.tags, styles.tag1]}>
             <Text style = {styles.tagst}>{props.tag1}</Text>
         </View>
-        <View style = {styles.tags}>
+        <View style = {[styles.tags, styles.tag2]}>
             <Text style = {styles.tagst}>{props.tag2}</Text>
         </View>
-        <View style = {styles.tags}>
+        <View style = {[styles.tags, styles.tag3]}>
             <Text style = {styles.tagst}>{props.tag3}</Text>
         </View>
-        <View style = {styles.tags}>
+        <View style = {[styles.tags, styles.tag4]}>
             <Text style = {styles.tagst}>{props.tag4}</Text>
         </View>
         </View>
@@ -127,9 +127,20 @@ const styles = StyleSheet.create({
   },
   tags: {
     marginLeft: 8,
-    backgroundColor: "pink",
     borderRadius: 5,
     paddingHorizontal: 5
+  },
+  tag1: {
+    backgroundColor: "#6EEAA0"
+  },
+  tag2: {
+    backgroundColor: '#FFA5E6'
+  },
+  tag3: {
+    backgroundColor: '#8CD5FE'
+  },
+  tag4: {
+    backgroundColor: '#8CD5FE'
   },
   tagst: {
     fontSize: 10
