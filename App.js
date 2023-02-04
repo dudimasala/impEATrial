@@ -7,6 +7,7 @@ import Recommendation from './frontend/pages/Recommendation';
 import Restaurants from './frontend/pages/Restaurants';
 import Staff from './frontend/pages/Staff';
 import Friends from './frontend/pages/Friends';
+import Search from './frontend/components/preferences/Search';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -33,7 +34,7 @@ export default function App() {
         </TouchableOpacity>
       </View>
       <Modal
-        propagateSwipe={true}
+        propagateSwipe
         isVisible={visible}
         coverScreen
         onSwipeComplete={toggleModal}
@@ -44,6 +45,7 @@ export default function App() {
           <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
             <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
           </TouchableOpacity>
+          <Search />
         </View>
       </Modal>
       {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'staff' ? <Staff /> : <Friends />}
@@ -92,15 +94,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius:30,
     borderBottomRightRadius:30,
     borderBottomLeftRadius:30,
-    overflow: "hidden"
+    overflow: 'hidden',
   },
-  closeButtonContainer : { 
+  closeButtonContainer: { 
     ...StyleSheet.absoluteFillObject,
     top: 15,
-    left: 310
+    left: 310,
   },
-  titleWrap : {
-    flexDirection: "row",
-    justifyContent: "space-evenly"
+  titleWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   }
 });
