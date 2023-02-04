@@ -103,7 +103,6 @@ export default function App() {
           <TouchableOpacity onPress={toggleModal} style = {styles.closeButtonContainer}>
             <Feather name="x" size={windowWidth / 15} style={styles.settingsIcon} />
           </TouchableOpacity>
-          <Search />
           <Preferences
             price = {price}
             onChangePrice = {onChangePrice}
@@ -116,6 +115,7 @@ export default function App() {
             gluten = {gluten}
             onChangeGluten = {onChangeGluten}
           />
+          <Search />
         </View>
       </Modal>
 
