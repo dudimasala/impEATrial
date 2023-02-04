@@ -42,6 +42,7 @@ const NavBar = (props) => {
         }
     }
     const changePage = (newPage) => {
+        
         props.setCurrView(newPage)
     }
     return (
