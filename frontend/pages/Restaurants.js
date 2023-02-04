@@ -25,7 +25,7 @@ export default function Restaurants() {
   const renderItem = ({item}) => {
     return (
     <RestaurantView 
-    restaurant={item.restaurants} 
+    restaurant={item.restaurant} 
     location={item.location}
     openingTimeWeekday={item.openingTimeWeekday}
     closingTimeWeekday={item.closingTimeWeekday}

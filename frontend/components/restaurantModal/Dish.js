@@ -1,21 +1,21 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View, Text, StyleSheet, TouchableOpacity,
+} from "react-native";
 
-
-export default function MealView(props) {
-
+export default function Dish(props) {
   function getTag() {
     let string = "";
     if (props.glutenFree) {
       string += "GF"
-    } 
+    }
     if(props.vegetarian) {
       if(string.length > 0) {
         string += ", V";
       } else {
         string += "V";
       }
-    } 
+    }
     if(props.vegan) {
       if(string.length > 0) {
         string += ", VG";
@@ -28,23 +28,21 @@ export default function MealView(props) {
 
   return (
     <TouchableOpacity style={[styles.item]}>
-        <View style={styles.photo}>
+      <View style={styles.photo} />
+      <View style={styles.sc}>
+        <View>
+          <Text style={[styles.name]}>
+            {props.item}
+          </Text>
         </View>
-        <View style={styles.sc}>
-          <View>
-          <Text style = {[styles.name]}>
-            Katsu Curry
-        </Text>
-          </View>
         <View style={styles.info}>
-          <Text style={styles.infot}>£12</Text>
-          <Text style={styles.infot}>GF, V, VG</Text>
+          <Text style={styles.infot}>{`£${props.price}`}</Text>
+          <Text style={styles.infot}>{getTag()}</Text>
         </View>
-        </View>
+      </View>
     </TouchableOpacity>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   item: {

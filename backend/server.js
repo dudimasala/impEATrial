@@ -1,6 +1,8 @@
 const { Client } = require('pg');
 const express = require('express');
 const fs = require('fs');
+const cors = require('cors');
+
 const Config = require('./config');
 const routesHandler = require('./routes/handler');
 const menuItems = require('./json/menuitems.json');
@@ -8,6 +10,7 @@ const restaurants = require('./json/restaurants.json');
 
 const app = express();
 app.use('/', routesHandler);
+app.use(cors());
 
 const PORT = 5000;
 app.listen(PORT, () => {
