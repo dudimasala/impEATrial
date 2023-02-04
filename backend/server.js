@@ -69,7 +69,7 @@ async function insertRestaurants() {
 }
 
 async function insertMenuItem({
-  restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date
+  restaurant, fooddrink, item, price, glutenFree, vegetarian, vegan, tags, nutrients, date,
 }) {
   const tagsSpaceSeparated = stringToArray(tags);
   const nutrientsSpaceSeparated = stringToArray(nutrients);
@@ -77,7 +77,18 @@ async function insertMenuItem({
     `INSERT INTO menuitems
      SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
      WHERE NOT EXISTS (SELECT * FROM menuitems WHERE restaurant = $1 AND item = $2)`,
-    [restaurant, item, fooddrink, price, glutenFree, vegetarian, vegan, tags, nutrients, date],
+    [
+      restaurant,
+      item,
+      fooddrink,
+      price,
+      glutenFree,
+      vegetarian,
+      vegan,
+      tagsSpaceSeparated,
+      nutrientsSpaceSeparated,
+      date,
+    ],
   );
 }
 
