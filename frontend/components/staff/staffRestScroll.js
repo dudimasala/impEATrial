@@ -1,12 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./staffItem";
-const DATA = require("../../../backend/json/restaurantTags.json");
 
-export default function StaffRestScroll() {
-  const [data, setData] = useState(DATA);
+export default function StaffRestScroll(props) {
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const restTags = JSON.parse(await AsyncStorage.getItem('@restaurantTags'));
+        if(restTags !== null) {
+          setFullData(restTags);
+          setData(restTags);
+        } else {
+          alert("Error Fetching Data");
+        }
+      } catch(e) {
+        alert("Error Fetching Data")
+      }
+    }
+    if(!bootedUp) {
+      getData();
+      setBootedUp(true);
+    }
+  })
+
+
+  const [fullData, setFullData] = useState();
+  const [data, setData] = useState();
   const [userInput, setUserInput] = useState("");
+  const [bootedUp, setBootedUp] = useState(false);
 
   const changeText = (input) => {
     setUserInput(input);
@@ -14,12 +38,12 @@ export default function StaffRestScroll() {
     const checkStart = (item) => {
         return (item.startsWith(input))
       }
-    setData(DATA.filter(item => item.name.toLowerCase().split(" ").some(checkStart)));
+    setData(fullData.filter(item => item.name.toLowerCase().split(" ").some(checkStart)));
   }
 
   const renderItem = ({item}) => {
     return (
-    <Item checked={item.checked} name={item.name} type={item.type} id={item.id} />
+    <Item checked={props.checkedRest[item.id - 1]} name={item.name} type={item.type} id={item.id} changeCheckedRest={props.changeCheckedRest} />
     );
   };
 
@@ -32,7 +56,7 @@ export default function StaffRestScroll() {
             onChangeText={(text) => changeText(text)}
             onClearPress={() => changeText("")}
         />
-        {
+        { data && fullData ?
         data.length !== 0 ? 
           <FlatList
         data={data}
@@ -43,6 +67,9 @@ export default function StaffRestScroll() {
         :
         <View style={styles.nrf}>
           <Text>No results found</Text>
+        </View> :
+        <View style={styles.nrf}>
+          <Text>Loading...</Text>
         </View>
         }
     </View> 
@@ -58,7 +85,7 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 0,
         height: "100%",
-        paddingVertical: 30,
+        paddingVertical: 0,
         marginBottom: 10
     },
     nrf: {

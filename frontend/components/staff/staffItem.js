@@ -6,6 +6,12 @@ import checkboxChecked from '../../assets/icon-checkbox-checked.png';
 
 export default function Item(props) {
   const [checked, setChecked] = useState(props.checked);
+
+  const alterChecked = () => {
+    setChecked(!checked);
+    props.changeCheckedRest(props.id);
+  }
+
   const photos = ( [
     require ("../../assets/scr.png"),
     require ("../../assets/scr.png"), 
@@ -21,7 +27,7 @@ export default function Item(props) {
   ])
 
   return (
-    <TouchableOpacity onPress={() => setChecked(!checked)} style={[styles.item]}>
+    <TouchableOpacity onPress={alterChecked} style={[styles.item]}>
         <View style = {styles.container}>
           <Image source = {photos[props.id]} style = {styles.image}/>
           <Text style = {[styles.name]}>

@@ -14,8 +14,8 @@ import Recommendation from './frontend/pages/Recommendation';
 import Restaurants from './frontend/pages/Restaurants';
 import Search from "./frontend/components/preferences/Search";
 import Staff from "./frontend/pages/Staff";
-import Friends from "./frontend/pages/Friends"
-import Account from "./frontend/components/Account"
+import Friends from "./frontend/pages/Friends";
+import Account from "./frontend/components/Account";
 const initPrefData = require('./backend/json/preferencestags.json');
 const initRestData = require('./backend/json/restaurantTags.json');
 
@@ -29,7 +29,7 @@ export default function App() {
         if(prefTags === null) {
           try {
             AsyncStorage.setItem('@preferenceTags', JSON.stringify(initPrefData));
-            let checkedItems = [];
+            const checkedItems = [];
             for(let i = 0; i < initPrefData; i++) {
               checkedItems.push(initPrefData[i].checked);
             }
@@ -38,7 +38,7 @@ export default function App() {
             alert('Server Side Error');
           }
         } else {
-          let checkedItems = [];
+          const checkedItems = [];
           const parsedPrefTags = JSON.parse(prefTags);
           for(let i = 0; i < parsedPrefTags; i++) {
             checkedItems.push(parsedPrefTags[i].checked);
@@ -56,9 +56,22 @@ export default function App() {
         if(restTags === null) {
           try {
             AsyncStorage.setItem('@restaurantTags', JSON.stringify(initRestData));
+            const checkedItems = [];
+            for(let i = 0; i < initRestData; i++) {
+              checkedItems.push(initRestData[i].checked);
+            }
+            setCheckedRest(checkedItems);
+
           } catch(e) {
             alert('Server Side Error');
           }
+        } else {
+          const checkedItems = [];
+          const parsedRestTags = JSON.parse(restTags);
+          for(let i = 0; i < parsedRestTags; i++) {
+            checkedItems.push(parsedRestTags[i].checked);
+          }
+          setCheckedRest(checkedItems);
         }
       } catch(e) {
         alert("Server-Side Error")
@@ -76,6 +89,8 @@ export default function App() {
   const [visible, setVisible] = useState(false);
   const [visibleAcc, setVisibleAcc] = useState(false);
   const [checked, setChecked] = useState();
+  const [checkedRest, setCheckedRest] = useState();
+
 
   const toggleModal = () => {
     setVisible(!visible);
@@ -89,6 +104,12 @@ export default function App() {
     const newArr = checked;
     newArr[id - 1] = !newArr[id - 1]
     setChecked(newArr);
+  }
+
+  const changeCheckedRest = (id) => {
+    const newArr = checked;
+    newArr[id - 1] = !newArr[id - 1]
+    setCheckedRest(newArr);
   }
 
   // Props for account preferences
@@ -126,9 +147,8 @@ export default function App() {
     const { data } = await axios.request(options);
     const { url } = data;
     const result = await WebBrowser.openBrowserAsync(url);
-    console.log(result);
   }
-  if(checked) {
+  if(checked && checkedRest) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -209,9 +229,9 @@ export default function App() {
       </Modal>
 
       {/* if/else based on navbar input recommendation / restaurants */}
-      {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends/> : <Staff />}
+      {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends/> : <Staff checkedRest={checkedRest} changeCheckedRest={changeCheckedRest} />}
       <View style={styles.navbar}>
-        <NavBar setCurrView={changePage} currPage={currPage} />
+        <NavBar setCurrView={changePage} currPage={currPage} checkedRest={checkedRest} />
       </View>
     </SafeAreaView>
   );
