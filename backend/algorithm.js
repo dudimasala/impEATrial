@@ -70,7 +70,7 @@ export default function rankMenuItems(menuItems, nutrients, recommendation, pref
     return contains(tags, 'savoury') || contains(tags, 'savory') || contains(tags, 'spicy') || contains(tags, 'bitter');
   });
   const savourySpicyBitterAndFillingMenuItems = savourySpicyBitterMenuItems.filter(
-    (item) => item.price >= 5,
+    (item) => item.price >= 4,
   );
   const ranked = savourySpicyBitterAndFillingMenuItems.sort(
     (a, b) =>

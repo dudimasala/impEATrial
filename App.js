@@ -153,7 +153,7 @@ export default function App() {
       setFirstTime(false);
       return new Promise(function(res, rej) {
         WebBrowser.openBrowserAsync(url)
-        setTimeout(res, 6500);
+        setTimeout(res, 5200);
       }).then(function() {
         WebBrowser.dismissBrowser();
       })
@@ -245,7 +245,7 @@ export default function App() {
       </Modal>
 
       {/* if/else based on navbar input recommendation / restaurants */}
-      {currPage === 'home' ? <Recommendation checked={checked}/> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends veg = {veg} vegan = {vegan} gluten = {gluten} checked = {checked}/> : <Staff checkedRest={checkedRest} changeCheckedRest={changeCheckedRest} />}
+      {currPage === 'home' ? <Recommendation checked={checked} vegan={vegan} vegetarian={veg} glutenFree={gluten}/> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends veg = {veg} vegan = {vegan} gluten = {gluten} checked = {checked}/> : <Staff checkedRest={checkedRest} changeCheckedRest={changeCheckedRest} />}
       <View style={styles.navbar}>
         <NavBar setCurrView={changePage} currPage={currPage} checkedRest={checkedRest} />
       </View>

@@ -11,7 +11,7 @@ const DATA = require('../../backend/json/menuitems.json');
 const testNutritionData = require('../../backend/json/testnutritiondata.json');
 const recommendationMale = require('../../backend/json/recommendation_male.json');
 
-export default function Recommendation({ checked }) {
+export default function Recommendation({ checked, vegetarian, vegan, glutenFree }) {
   const [menuItems, setMenuItems] = useState([]);
 
   const images = {
@@ -60,7 +60,7 @@ export default function Recommendation({ checked }) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={rankMenuItems(menuItems, testNutritionData[5].data[0], recommendationMale, checked)}
+        data={rankMenuItems(menuItems.filter((item) => (!vegan || item.vegan) && (!vegetarian || item.vegetarian) && (!glutenFree || item.gluten_free)), testNutritionData[5].data[0], recommendationMale, checked)}
         renderItem={renderItem}
         keyExtractor={(item) => item.name}
         style={styles.fl}
