@@ -153,7 +153,7 @@ export default function App() {
       setFirstTime(false);
       return new Promise(function(res, rej) {
         WebBrowser.openBrowserAsync(url)
-        setTimeout(res, 6000);
+        setTimeout(res, 6500);
       }).then(function() {
         WebBrowser.dismissBrowser();
       })
