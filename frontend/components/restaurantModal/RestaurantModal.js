@@ -50,7 +50,6 @@ export default function RestaurantView(props) {
 
   useEffect(() => {
     getMenuItems();
-    console.log(menuItems);
   }, []);
 
   const renderItem = ({ item }) => (
