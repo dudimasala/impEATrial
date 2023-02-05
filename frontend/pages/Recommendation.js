@@ -32,12 +32,10 @@ export default function Recommendation() {
     const result = await fetch(url);
     const resultJson = await result.json();
     setMenuItems(resultJson);
-    console.log(menuItems);
   }
 
   useEffect(() => {
     getMenuItems();
-    console.log(testNutritionData[0].data[0].summary);
   }, []);
 
   return (
