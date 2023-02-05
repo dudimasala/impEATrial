@@ -1,12 +1,17 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Text, StyleSheet, View, FlatList, SafeAreaView, Image, TouchableOpacity} from 'react-native'
 import Modal from 'react-native-modal';
 import {AntDesign, Entypo, MaterialCommunityIcons, Feather, Fontisto, Ionicons} from 'react-native-vector-icons'
 import FriendItem from '../components/friends/friendItem'
-const DATA = require('../../backend/json/friendtags.json')
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import matchFriends from '../../backend/friendmatchalgo';
+// const DATA = require('../../backend/json/friendtags.json')
 
-export default function Friends() {
-  
+export default function Friends(props) {
+
+
+  const DATA = matchFriends(tags, props.veg, props.vegan, props.gluten)
+
   const photos = ([
     require('../assets/malhar.png'),
     require('../assets/malhar.png'),
@@ -74,7 +79,7 @@ export default function Friends() {
           Eat with a Friend!
       </Text>
       <FlatList
-          data={DATA.slice(0)}
+          data={DATA}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           style={styles.fl}
@@ -93,7 +98,7 @@ export default function Friends() {
           </TouchableOpacity>
           <SafeAreaView>
             <Text style = {styles.title}>
-                Account Details
+                Friend Details
             </Text>
             <View style = {styles.imageframe}> 
               <Image source = {photos[id]} style = {styles.image}/>
