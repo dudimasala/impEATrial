@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   },
   options : {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-end",
     alignItems: "center"
   
   },

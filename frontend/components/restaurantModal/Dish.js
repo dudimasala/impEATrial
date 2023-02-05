@@ -10,7 +10,7 @@ export default function Dish(props) {
       string += "GF"
     }
     if(props.vegetarian) {
-      if(string.length > 0) {
+      if(string.trim().length > 0) {
         string += ", V";
       } else {
         string += "V";
@@ -23,6 +23,11 @@ export default function Dish(props) {
         string += "VG";
       }
     }
+
+    if(string === "") {
+      string = "N/A"
+    }
+    
     return string;
   }
 
@@ -36,7 +41,7 @@ export default function Dish(props) {
           </Text>
         </View>
         <View style={styles.info}>
-          <Text style={styles.infot}>{`£${props.price}`}</Text>
+          <Text style={styles.infot}>{`£${props.price.toFixed(2)}`}</Text>
           <Text style={styles.infot}>{getTag()}</Text>
         </View>
       </View>
@@ -86,6 +91,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   infot: {
-    marginRight: 142
+    marginRight: 125
   }
 })

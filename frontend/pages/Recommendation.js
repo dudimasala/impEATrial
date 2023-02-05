@@ -22,6 +22,8 @@ export default function Recommendation() {
       glutenFree={item.glutenFree}
       vegetarian={item.vegetarian}
       vegan={item.vegan}
+    waittime = {item.waittime}
+    id = {item.id}
     />
   );
 

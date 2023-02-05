@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image} from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity} from "react-native";
 import Dish from './Dish';
 import Config from '../../../backend/config';
 
 export default function RestaurantView(props) {
   const [menuItems, setMenuItems] = useState([]);
+  const [fd, setFd] = useState('food');
+
+  function toggleFd() {
+    if(fd === 'food') {
+      setFd('drink');
+    } else {
+      setFd('food');
+    }
+  }
 
   function getOpeningTime() {
     const ow = new Date(props.openingTime);
@@ -62,7 +71,7 @@ export default function RestaurantView(props) {
       price={item.price}
     />
   );
-
+  if(menuItems) {
   return (
     <View style={[styles.container]}>
       <View style={[styles.item]}>
@@ -106,22 +115,65 @@ export default function RestaurantView(props) {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
       </View>
-      {
-        menuItems ?
-        <FlatList
-          data={menuItems}
+        { fd === 'food' ? 
+        <View style = {styles.optionscontainer}>
+        <TouchableOpacity style={styles.otherbox}>
+          <View>
+            <Text style = {styles.text}>Food</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style = {styles.boxbutton}>
+          <View>
+            <Text style = {styles.text} onPress={toggleFd}>Drinks</Text>
+          </View>
+        </TouchableOpacity>
+        </View>
+        : 
+        <View style = {styles.optionscontainer}>
+        <TouchableOpacity style={styles.boxbutton}>
+          <View>
+          <Text style = {styles.text} onPress={toggleFd}>Food</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style = {styles.otherbox}>
+          <View>
+          <Text style = {styles.text} >Drinks</Text>
+          </View>
+        </TouchableOpacity>
+        </View>
+        }
+        {
+          fd === "food" ?
+          <FlatList
+          data={menuItems.filter(item => item.category === "Food")}
           renderItem={renderItem}
           keyExtractor={item => item.name}
           style={styles.fl}
-        /> : <View />
-      }
+        /> :
+        <FlatList
+          data={menuItems.filter(item => item.category === "Drink")}
+          renderItem={renderItem}
+          keyExtractor={item => item.name}
+          style={styles.fl}
+        /> 
+        }
     </View>
-  );
+  ) } else {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center'
+  },
+  fl: {
+    marginTop: 10,
+    height: "100%",
+    marginBottom: 10,
+    borderRadius: 10
   },
   item: {
     paddingHorizontal: 8,
@@ -193,5 +245,43 @@ const styles = StyleSheet.create({
   },
   tagst: {
     fontSize: 10
-  }
+  },
+  options: {
+    marginTop: 10
+  },
+  boxbutton: {
+    backgroundColor: "#d3d3d3",
+    paddingHorizontal: 10,
+    height: 35,
+    marginVertical: 8,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  otherbox: {
+    backgroundColor: "#add8e6",
+    paddingHorizontal: 10,
+    height: 35,
+    marginVertical: 8,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  optionscontainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly', 
+    width: 150,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  text : {
+    fontSize: 20,
+    fontWeight: '500',
+    textAlign: "right"
+  },
+ 
 })

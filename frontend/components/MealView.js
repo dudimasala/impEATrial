@@ -32,16 +32,28 @@ export default function MealView(props) {
         </View>
         <View style={styles.sc}>
           <View>
-          <Text style = {[styles.name]}>
-            {props.item}
-        </Text>
+          
+          <View style = {styles.toprow}>
+            <Text style = {[styles.name]}>
+              {props.item}
+            </Text>
+          </View>
+            {props.id <= 3 ?
+              <View style = {styles.circle}>
+                <Text style = {styles.text1}>{props.id}</Text>
+              </View>
+              :
+              <View/>
+            }
+          
+
         <Text style = {styles.rest}>
             {props.restaurant}
         </Text>
           </View>
         <View style={styles.info}>
           <Text style={styles.infot}>£{props.price.toFixed(2)}</Text>
-          <Text style={styles.infot}>15 mins</Text>
+          <Text style={styles.infot}>{props.waittime} mins</Text>
           <Text style={styles.infot}>{getTag()}</Text>
         </View>
         </View>
@@ -93,5 +105,26 @@ const styles = StyleSheet.create({
   },
   infot: {
     marginRight: 50
+  },
+  toprow: {
+    flexDirection: "row",
+  },
+  circle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#ff8585",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "absolute",
+    top: -8,
+    left: 220
+  },
+  text1: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontStyle: "italic",
+    fontSize: 22
   }
 })
