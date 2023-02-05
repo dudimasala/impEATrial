@@ -5,12 +5,12 @@ import SearchBar from "react-native-dynamic-search-bar";
 import checkbox from '../../assets/icon-checkbox.png';
 import checkboxChecked from '../../assets/icon-checkbox-checked.png';
 import axios from 'axios';
-
-const apiKey = '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';
+import Config from '../../../backend/config';
 
 const client = axios.create({
   headers: {
-    Authorization: "Bearer " + apiKey,
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${Config.gptAPIKey}`,
   },
 });
 
@@ -28,23 +28,61 @@ export default function InsertMenu() {
   async function generateTags() {
     const params = {
       prompt: `Give me the two main ingredients, main cuisine, and main flavour of a '${userInput}' in the format ["ingredient 1", "ingredient 2", "cuisine", "flavour"]`,
-      model: "text-davinci-003",
+      model: 'text-davinci-003',
       max_tokens: 500,
       temperature: 0,
     };
 
     await client
-    .post("https://api.openai.com/v1/completions", params)
-    .then((result) => {
-      const res = JSON.parse(result.data.choices[0].text);
-      setFood(res[0]);
-      setIngredient(res[1]);
-      setCuisine(res[2]);
-      setFlavour(res[3]);
-    })
-    .catch((err) => {
-      alert("Server side error")
+      .post('https://api.openai.com/v1/completions', params)
+      .then((result) => {
+        const res = JSON.parse(result.data.choices[0].text);
+        console.log(res);
+        setFood(res[0]);
+        setIngredient(res[1]);
+        setCuisine(res[2]);
+        setFlavour(res[3]);
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+      });
+  }
+
+  async function updateDatabase() {
+    const url = `${Config.localtunnel}/menuitems`;
+    const tagsCommaSeparated = [food, ingredient, cuisine, flavour].join(', ');
+    const result = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        restaurant: 'Kimiko',
+        item: userInput,
+        price: userInput2,
+        glutenFree: gf,
+        vegan: vg,
+        vegetarian: v,
+        tags: tagsCommaSeparated,
+        nutrients: 'Fats, Carbohydrates, Carbohydrates, Carbohydrates',
+      }),
     });
+    const resultJson = await result.json();
+    console.log(`Item inserted: ${userInput}`);
+    const testURL = `${Config.localtunnel}/testInsert`;
+    const test = await fetch(testURL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        item: userInput,
+      }),
+    });
+    const testJSON = await test.json();
+    console.log(testJSON);
   }
 
    const changeText = (input) => {
@@ -125,7 +163,7 @@ export default function InsertMenu() {
                  </View>
             </View>
         </View>
-        <TouchableOpacity style={[styles.item]}>
+        <TouchableOpacity style={[styles.item]} onPress={() => updateDatabase()}>
             <Text style = {styles.title}>
               Update Database
             </Text> 

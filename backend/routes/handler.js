@@ -23,16 +23,47 @@ router.get('/menuitems', (req, res) => {
   });
 });
 
-// router.get('/restaurants', (req, res) => {
-//   const client = new Client(Config.db);
-//   client.connect();
-//   const { restaurant } = req.body;
-//   client.query('SELECT * FROM menuitems', (err, response) => {
-//     if (err) throw err;
-//     const { rows } = response;
-//     res.end(JSON.stringify(rows));
-//   });
-// });
+router.post('/menuitems', (req, res) => {
+  const client = new Client(Config.db);
+  client.connect();
+  const {
+    restaurant, item, price, glutenFree, vegetarian, vegan, tags, nutrients,
+  } = req.body;
+  client.query(
+    `INSERT INTO menuitems
+     SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, NULL
+     WHERE NOT EXISTS (SELECT * FROM menuitems WHERE restaurant = $1 AND item = $2)`,
+    [
+      restaurant,
+      item,
+      'Food',
+      price,
+      glutenFree,
+      vegetarian,
+      vegan,
+      tags,
+      nutrients,
+    ],
+    (err, response) => {
+      if (err) {
+        res.end(JSON.stringify('Error'));
+      } else {
+        res.end(JSON.stringify('Success'));
+      }
+    },
+  );
+});
+
+router.post('/testInsert', (req, res) => {
+  const client = new Client(Config.db);
+  client.connect();
+  const { item } = req.body;
+  client.query('SELECT * FROM menuitems WHERE item = $1', [item], (err, response) => {
+    if (err) throw err;
+    const { rows } = response;
+    res.end(JSON.stringify(rows));
+  });
+});
 
 // Returns the menu items served by the specified restaurant
 router.post('/restaurants', (req, res) => {
@@ -47,7 +78,6 @@ router.post('/restaurants', (req, res) => {
 });
 
 router.post('/terra', (req, res) => {
-  console.log(req.body);
   res.sendStatus(200);
 });
 

@@ -1,18 +1,21 @@
 import prefTags from './json/preferencestags.json';
 
 function getMissingNutrientsScore(menuItem, missingNutrients) {
+  if (menuItem.nutrients === null) {
+    return 0;
+  }
   const missingNutrientsFormatted = missingNutrients.map((nutrient) => {
     const splitByUnderscore = nutrient.split("_");
     return splitByUnderscore
       .slice(0, splitByUnderscore.length - 1)
-      .join(" ")
+      .join(' ')
       .toLowerCase();
   });
   const menuItemNutrientsFormatted = menuItem.nutrients
-    .split(", ")
+    .split(', ')
     .map((nutrient) => nutrient.toLowerCase());
   const missingNutrientsScore = missingNutrientsFormatted.filter(
-    (nutrient) => menuItemNutrientsFormatted.indexOf(nutrient) > -1
+    (nutrient) => menuItemNutrientsFormatted.indexOf(nutrient) > -1,
   ).length;
   return missingNutrientsScore;
 }
@@ -58,14 +61,17 @@ function getMissingNutrients(nutrients, recommendation) {
 }
 
 export default function rankMenuItems(menuItems, nutrients, recommendation, preferences) {
-  const savouryMenuItems = menuItems.filter((item) => {
-    const tags = item.tags.split(", ");
-    return tags.indexOf("savoury") > -1 || tags.indexOf("savory") > -1;
+  function contains(array, elem) {
+    return array.indexOf(elem) > -1;
+  }
+  const savourySpicyBitterMenuItems = menuItems.filter((item) => {
+    const tags = item.tags.split(", ").map((tag) => tag.toLowerCase());
+    return contains(tags, 'savoury') || contains(tags, 'savory') || contains(tags, 'spicy') || contains(tags, 'bitter');
   });
-  const savouryAndFillingMenuItems = savouryMenuItems.filter(
-    (item) => item.price >= 5
+  const savourySpicyBitterAndFillingMenuItems = savourySpicyBitterMenuItems.filter(
+    (item) => item.price >= 5,
   );
-  const ranked = savouryAndFillingMenuItems.sort(
+  const ranked = savourySpicyBitterAndFillingMenuItems.sort(
     (a, b) =>
       score(b, getMissingNutrients(nutrients, recommendation), preferences) -
       score(a, getMissingNutrients(nutrients, recommendation), preferences)
