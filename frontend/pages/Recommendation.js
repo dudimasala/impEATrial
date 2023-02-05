@@ -25,6 +25,8 @@ export default function Recommendation({ checked }) {
     '(SUMO) Japanese Curry & Rice': require('../assets/japanese-curry.jpg'),
     'Japanese Curry & Rice': require('../assets/japanese-curry.jpg'),
     '(SUMO) Shrimp Fry Curry & Rice': require('../assets/japanese-curry.jpg'),
+    'Thai Green Chicken Curry with Rice, Spring Rolls & Prawn Crackers': require('../assets/thai-green-curry-recipe.jpg'),
+    'Mutton Railway Curry & Basmati Rice, Naan, Veggie Samosas': require('../assets/mushroom-curry.jpg'),
     Takoyaki: require('../assets/takoyaki.jpg'),
     testing: require('../assets/aboud.png'),
   };
