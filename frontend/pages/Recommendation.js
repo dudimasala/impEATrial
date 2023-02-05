@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 
 import MealView from '../components/MealView';
 import Config from '../../backend/config';
+import rankMenuItems from '../../backend/algorithm';
 
 const DATA = require('../../backend/json/menuitems.json');
 
 const testNutritionData = require('../../backend/json/testnutritiondata.json');
 const recommendationMale = require('../../backend/json/recommendation_male.json');
-import rankMenuItems from '../../backend/algorithm';
 
-export default function Recommendation() {
+export default function Recommendation({ checked }) {
   const [menuItems, setMenuItems] = useState([]);
 
   const renderItem = ({ item }) => (
@@ -41,7 +41,7 @@ export default function Recommendation() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={rankMenuItems(menuItems, testNutritionData[5].data[0], recommendationMale, null)}
+        data={rankMenuItems(menuItems, testNutritionData[5].data[0], recommendationMale, checked)}
         renderItem={renderItem}
         keyExtractor={(item) => item.name}
         style={styles.fl}

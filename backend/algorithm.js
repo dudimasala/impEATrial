@@ -1,6 +1,6 @@
-// We need recommendation data
+import prefTags from './json/preferencestags.json';
 
-function score(menuItem, missingNutrients, preferences) {
+function getMissingNutrientsScore(menuItem, missingNutrients) {
   const missingNutrientsFormatted = missingNutrients.map((nutrient) => {
     const splitByUnderscore = nutrient.split("_");
     return splitByUnderscore
@@ -15,6 +15,19 @@ function score(menuItem, missingNutrients, preferences) {
     (nutrient) => menuItemNutrientsFormatted.indexOf(nutrient) > -1
   ).length;
   return missingNutrientsScore;
+}
+
+function getPreferencesScore(menuItem, preferences) {
+  const checkedTags = prefTags.filter((tag) => tag.id <= preferences.length && preferences[tag.id - 1]).map((tag) => tag.name.toLowerCase());
+
+  const result = menuItem.tags.split(', ').filter((tag) => checkedTags.indexOf(tag) > -1).length;
+  return result;
+}
+
+function score(menuItem, missingNutrients, preferences) {
+  const missingNutrientsScore = getMissingNutrientsScore(menuItem, missingNutrients);
+  const preferencesScore = getPreferencesScore(menuItem, preferences);
+  return missingNutrientsScore + 2 * preferencesScore;
 }
 
 function getMissingNutrients(nutrients, recommendation) {
