@@ -5,6 +5,7 @@ import MealView from '../components/MealView';
 import Config from '../../backend/config';
 import rankMenuItems from '../../backend/algorithm';
 
+// Use this instead of menuItems if backend server not working
 const DATA = require('../../backend/json/menuitems.json');
 
 const testNutritionData = require('../../backend/json/testnutritiondata.json');
@@ -12,6 +13,12 @@ const recommendationMale = require('../../backend/json/recommendation_male.json'
 
 export default function Recommendation({ checked }) {
   const [menuItems, setMenuItems] = useState([]);
+
+  const images = {
+    'Beef Roast with Yorkshire Pudding, Roast Potatoes & Mixed Vegetables': require('../assets/beef-roast.png'),
+    '(SUMO) Salmon Teriyaki & Rice': require('../assets/salmon-teriyaki.png'),
+    testing: require('../assets/aboud.png'),
+  };
 
   const renderItem = ({ item }) => (
     <MealView
@@ -22,8 +29,9 @@ export default function Recommendation({ checked }) {
       glutenFree={item.glutenFree}
       vegetarian={item.vegetarian}
       vegan={item.vegan}
-      waittime = {item.waittime}
-      id = {item.id}
+      waittime={item.waittime}
+      id={item.id}
+      image={images[item.item] === undefined ? images.testing : images[item.item]}
     />
   );
 

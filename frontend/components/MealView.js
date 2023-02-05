@@ -1,9 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 export default function MealView(props) {
-
   function getTag() {
     let string = "";
     if (props.glutenFree) {
@@ -26,31 +24,31 @@ export default function MealView(props) {
     return string;
   }
 
+  // useEffect(() => {
+  //   console.log(props.item);
+  // }, []);
+
   return (
     <TouchableOpacity style={[styles.item]}>
-        <View style={styles.photo}>
-        </View>
-        <View style={styles.sc}>
-          <View>
-          
+      <Image source={props.image} style={styles.photo} />
+      <View style={styles.sc}>
+        <View>
           <View style = {styles.toprow}>
             <Text style = {[styles.name]}>
               {props.item}
             </Text>
           </View>
-            {props.id <= 3 ?
-              <View style = {styles.circle}>
-                <Text style = {styles.text1}>{props.id}</Text>
-              </View>
-              :
-              <View/>
-            }
-          
-
-        <Text style = {styles.rest}>
-            {props.restaurant}
-        </Text>
+          {props.id <= 3
+          ?
+          <View style = {styles.circle}>
+            <Text style = {styles.text1}>{props.id}</Text>
           </View>
+            : <View />
+          }
+          <Text style={styles.rest}>
+              {props.restaurant}
+          </Text>
+        </View>
         <View style={styles.info}>
           <Text style={styles.infot}>£{props.price.toFixed(2)}</Text>
           <Text style={styles.infot}>{props.waittime} mins</Text>
@@ -58,9 +56,8 @@ export default function MealView(props) {
         </View>
         </View>
     </TouchableOpacity>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   item: {
