@@ -229,7 +229,7 @@ export default function App() {
       </Modal>
 
       {/* if/else based on navbar input recommendation / restaurants */}
-      {currPage === 'home' ? <Recommendation /> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends/> : <Staff checkedRest={checkedRest} changeCheckedRest={changeCheckedRest} />}
+      {currPage === 'home' ? <Recommendation checked={checked}/> : currPage === 'nav' ? <Restaurants /> : currPage === 'friends'? <Friends/> : <Staff checkedRest={checkedRest} changeCheckedRest={changeCheckedRest} />}
       <View style={styles.navbar}>
         <NavBar setCurrView={changePage} currPage={currPage} checkedRest={checkedRest} />
       </View>
