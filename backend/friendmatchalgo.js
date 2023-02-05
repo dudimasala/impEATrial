@@ -7,14 +7,15 @@ export default function matchFriends(pref, veg, vegan, gluten) {
     const generateScore = (item) => {
         let oldObj = item
         let keyValue = 0
-        // let tie = 0
-        if (item.veg == veg) {
+        let tie = 0
+
+        if (item.vegetarian == veg && veg == true) {
             keyValue ++;
         }
-        if (item.vegan == vegan) {
+        if (item.vegan == vegan  && vegan == true) {
             keyValue ++;
         }
-        if (item.gluten == gluten) {
+        if (item.gluten == gluten && gluten == true) {
             keyValue ++;
         }
         
@@ -30,7 +31,7 @@ export default function matchFriends(pref, veg, vegan, gluten) {
     }
 
     return (friendDATA).map(item => generateScore(item)).sort(function(a, b) {
-        console.log(a.name + a.key + b.name + b.key)
+        // console.log(a.name + a.key + b.name + b.key)
         if (a.key === b.key) {
           return b.tiebreaker - a.tiebreaker;
         } else {

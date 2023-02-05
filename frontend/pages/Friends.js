@@ -3,14 +3,16 @@ import {Text, StyleSheet, View, FlatList, SafeAreaView, Image, TouchableOpacity}
 import Modal from 'react-native-modal';
 import {AntDesign, Entypo, MaterialCommunityIcons, Feather, Fontisto, Ionicons} from 'react-native-vector-icons'
 import FriendItem from '../components/friends/friendItem'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import matchFriends from '../../backend/friendmatchalgo';
-// const DATA = require('../../backend/json/friendtags.json')
+
+const prefTags = require('../../backend/json/preferencestags.json')
 
 export default function Friends(props) {
-
+  let checked = props.checked
+  let tags = prefTags.filter((tag) => tag.id <= checked.length && checked[tag.id -1]).map((tag) => tag.name.toLowerCase())
 
   const DATA = matchFriends(tags, props.veg, props.vegan, props.gluten)
+  // console.log(DATA)
 
   const photos = ([
     require('../assets/malhar.png'),

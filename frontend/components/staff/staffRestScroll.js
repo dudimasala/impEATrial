@@ -21,7 +21,7 @@ export default function StaffRestScroll(props) {
       }
     }
     if(!bootedUp) {
-      getData();
+      getData(); 
       setBootedUp(true);
     }
   })
