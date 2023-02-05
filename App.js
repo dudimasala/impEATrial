@@ -22,6 +22,9 @@ const initRestData = require('./backend/json/restaurantTags.json');
 const windowWidth = Dimensions.get('window').width;
 
 export default function App() {
+
+  const [firstTime, setFirstTime] = useState(true);
+
   useEffect(() => {
     async function storePrefData() {
       try {
@@ -140,13 +143,26 @@ export default function App() {
       },
       data: {
         reference_id: 'angusleung',
-        providers: 'GARMIN,WITHINGS,FITBIT,GOOGLE,OURA,WAHOO,PELOTON,ZWIFT,TRAININGPEAKS,FREESTYLELIBRE,DEXCOM,COROS,HUAWEI,OMRON,RENPHO,POLAR,SUUNTO,EIGHT,APPLE,CONCEPT2,WHOOP,IFIT,TEMPO,CRONOMETER,FATSECRET,NUTRACHECK,UNDERARMOUR',
+        providers: 'FITBIT',
         language: 'en',
       },
     };
     const { data } = await axios.request(options);
     const { url } = data;
-    const result = await WebBrowser.openBrowserAsync(url);
+    function getData() {
+      setFirstTime(false);
+      return new Promise(function(res, rej) {
+        WebBrowser.openBrowserAsync(url)
+        setTimeout(res, 6000);
+      }).then(function() {
+        WebBrowser.dismissBrowser();
+      })
+    }
+    if(firstTime) {
+      getData();
+    } else {
+      await WebBrowser.openBrowserAsync(url);
+    }
   }
   if(checked && checkedRest) {
   return (

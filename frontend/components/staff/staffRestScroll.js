@@ -78,7 +78,7 @@ export default function StaffRestScroll(props) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 240,
+        height: 215,
         marginBottom: 0
     },
     fl: {

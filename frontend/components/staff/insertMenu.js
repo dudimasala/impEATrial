@@ -1,35 +1,100 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Switch } from 'react-native';
 import {Entypo, FontAwesome5} from 'react-native-vector-icons';
 import SearchBar from "react-native-dynamic-search-bar";
-  
+import checkbox from '../../assets/icon-checkbox.png';
+import checkboxChecked from '../../assets/icon-checkbox-checked.png';
+import axios from 'axios';
+
+const apiKey = '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';
+
+const client = axios.create({
+  headers: {
+    Authorization: "Bearer " + apiKey,
+  },
+});
 
 export default function InsertMenu() {
    const [userInput, setUserInput] = useState("");
+   const [userInput2, setUserInput2] = useState("");
+   const [gf, setGf] = useState(false);
+   const [v, setV] = useState(false);
+   const [vg, setVg] = useState(false);
+   const [food, setFood] = useState();
+   const [ingredient, setIngredient] = useState();
+   const [cuisine, setCuisine] = useState();
+   const [flavour, setFlavour] = useState();
+
+  async function generateTags() {
+    const params = {
+      prompt: `Give me the two main ingredients, main cuisine, and main flavour of a '${userInput}' in the format ["ingredient 1", "ingredient 2", "cuisine", "flavour"]`,
+      model: "text-davinci-003",
+      max_tokens: 500,
+      temperature: 0,
+    };
+
+    await client
+    .post("https://api.openai.com/v1/completions", params)
+    .then((result) => {
+      const res = JSON.parse(result.data.choices[0].text);
+      setFood(res[0]);
+      setIngredient(res[1]);
+      setCuisine(res[2]);
+      setFlavour(res[3]);
+    })
+    .catch((err) => {
+      alert("Server side error")
+    });
+  }
 
    const changeText = (input) => {
     setUserInput(input);
-    
   }
-  const [foodTag1, setft1] = useState("Food?");
-  const [foodTag2, setft2] = useState("Ingredient?");
-  const [cuisineTag, setct] = useState("Cuisine?");
-  const [flavourTag, setflt] = useState("Flavour?");
+
+  const changeText2 = (input) => {
+    setUserInput2(input)
+  }
 
   return (
     <View>
-        <View >
             <SearchBar
-                placeholder="Enter New Product Name"
+                placeholder="Product Name"
                 value={userInput}
                 searchIconComponent = {<Entypo name = "pencil" size = {23}/>}
                 onClearPress={() => changeText("")}
                 onChangeText = {(text) => changeText(text)}
                 style = {styles.searchbar}
             />
-         </View>
+            <SearchBar
+                placeholder="Price"
+                value={userInput2}
+                searchIconComponent = {<FontAwesome5 name = "pound-sign" size = {23}/>}
+                onClearPress={() => changeText2("")}
+                onChangeText = {(text) => changeText2(text)}
+                style = {styles.searchbar}
+            />
+        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => setGf(!gf)}>
+            <Image style={styles.checkbox} source={gf ? checkboxChecked : checkbox} onPress />
+          </TouchableOpacity>
+          <Text style={{fontSize: 20}}>GF</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => setV(!v)}>
+            <Image style={styles.checkbox} source={v ? checkboxChecked : checkbox} onPress />
+          </TouchableOpacity>
+          <Text style={{fontSize: 20}}>V</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => setVg(!vg)}>
+            <Image style={styles.checkbox} source={vg ? checkboxChecked : checkbox} onPress />
+          </TouchableOpacity>
+          <Text style={{fontSize: 20}}>VG</Text>
+          </View>
+        </View> 
         <View>
-            <TouchableOpacity style={[styles.item]}>
+            <TouchableOpacity style={[styles.item]} onPress={generateTags}>
                 <Text style = {styles.title}>
                 Generate Hashtags
                 </Text> 
@@ -38,24 +103,24 @@ export default function InsertMenu() {
             <View style = {styles.row}>
                 <View style={[styles.ft]}>
                     <Text style = {styles.filterTag}>
-                      Food?
+                      { food ? food : `Food?`}
                     </Text> 
                  </View>
                  <View style={[styles.ft2]}>
                     <Text style = {styles.filterTag}>
-                      Ingredient?
+                      { ingredient ? ingredient : `Ingredient`}
                     </Text> 
                  </View>
             </View>
             <View style = {styles.row}>
                 <View style={[styles.ct]}>
                     <Text style = {styles.filterTag}>
-                      Cuisine?
+                      { cuisine ? cuisine : `Cuisine?`}
                     </Text> 
                  </View>
                  <View style={[styles.flt]}>
                     <Text style = {styles.filterTag}>
-                      Flavour?
+                      {flavour ? flavour : `Flavour?`}
                     </Text> 
                  </View>
             </View>
@@ -154,8 +219,11 @@ const styles = StyleSheet.create({
     alignText: 'center'
   },
   searchbar: {
-    marginTop: 10,
     marginBottom: 10
+  },
+  checkbox: {
+    height: 25,
+    width: 25
   }
   });
   

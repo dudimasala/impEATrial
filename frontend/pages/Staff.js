@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 22,
-    marginTop: 10,
-    marginBottom: 10
+    marginTop: 0,
+    marginBottom: 5
   },
   scrollsection: {
     marginTop: 0,
