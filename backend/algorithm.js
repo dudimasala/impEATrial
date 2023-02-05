@@ -30,7 +30,8 @@ function getPreferencesScore(menuItem, preferences) {
 function score(menuItem, missingNutrients, preferences) {
   const missingNutrientsScore = getMissingNutrientsScore(menuItem, missingNutrients);
   const preferencesScore = getPreferencesScore(menuItem, preferences);
-  return missingNutrientsScore + 2 * preferencesScore;
+  const totalScore = missingNutrientsScore + 50 * preferencesScore;
+  return totalScore;
 }
 
 function getMissingNutrients(nutrients, recommendation) {
@@ -61,10 +62,10 @@ function getMissingNutrients(nutrients, recommendation) {
 }
 
 export default function rankMenuItems(menuItems, nutrients, recommendation, preferences) {
-  function contains(array, elem) {
-    return array.indexOf(elem) > -1;
-  }
   const savourySpicyBitterMenuItems = menuItems.filter((item) => {
+    function contains(array, elem) {
+      return array.indexOf(elem) > -1;
+    }
     const tags = item.tags.split(", ").map((tag) => tag.toLowerCase());
     return contains(tags, 'savoury') || contains(tags, 'savory') || contains(tags, 'spicy') || contains(tags, 'bitter');
   });
