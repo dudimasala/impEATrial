@@ -15,8 +15,12 @@ export default function Recommendation({ checked }) {
   const [menuItems, setMenuItems] = useState([]);
 
   const images = {
-    'Beef Roast with Yorkshire Pudding, Roast Potatoes & Mixed Vegetables': require('../assets/beef-roast.png'),
-    '(SUMO) Salmon Teriyaki & Rice': require('../assets/salmon-teriyaki.png'),
+    'Beef Roast with Yorkshire Pudding, Roast Potatoes & Mixed Vegetables': require('../assets/beef-roast.jpg'),
+    '(SUMO) Salmon Teriyaki & Rice': require('../assets/beef-roast.jpg'),
+    'Bacon & Onion Pizza': require('../assets/bacon-onion-pizza.jpg'),
+    'Mushroom & Onion Pizza': require('../assets/mushroom-onion-pizza.jpg'),
+    'Pork Ribs & Chicken Wings': require('../assets/ribs-wings.webp'),
+    Takoyaki: require('../assets/takoyaki.jpg'),
     testing: require('../assets/aboud.png'),
   };
 
