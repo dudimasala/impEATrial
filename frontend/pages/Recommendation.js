@@ -16,10 +16,15 @@ export default function Recommendation({ checked }) {
 
   const images = {
     'Beef Roast with Yorkshire Pudding, Roast Potatoes & Mixed Vegetables': require('../assets/beef-roast.jpg'),
-    '(SUMO) Salmon Teriyaki & Rice': require('../assets/beef-roast.jpg'),
+    '(SUMO) Salmon Teriyaki & Rice': require('../assets/teriyaki-salmon.webp'),
     'Bacon & Onion Pizza': require('../assets/bacon-onion-pizza.jpg'),
     'Mushroom & Onion Pizza': require('../assets/mushroom-onion-pizza.jpg'),
     'Pork Ribs & Chicken Wings': require('../assets/ribs-wings.webp'),
+    'Chicken Curry & Rice': require('../assets/chicken-curry.jpg'),
+    'Chickpea Curry & Basmati Rice, Naan, Veggie Samosas': require('../assets/chickpea-curry.jpg'),
+    '(SUMO) Japanese Curry & Rice': require('../assets/japanese-curry.jpg'),
+    'Japanese Curry & Rice': require('../assets/japanese-curry.jpg'),
+    '(SUMO) Shrimp Fry Curry & Rice': require('../assets/japanese-curry.jpg'),
     Takoyaki: require('../assets/takoyaki.jpg'),
     testing: require('../assets/aboud.png'),
   };
