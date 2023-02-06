@@ -42,20 +42,27 @@ export default function RestaurantView(props) {
   }
 
   async function getMenuItems() {
-    const url = `${Config.localtunnel}/restaurants`;
-    const result = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        restaurant: `${props.restaurant}`,
-      }),
-    });
-    const resultJson = await result.json();
-    setMenuItems(resultJson);
+    const url = `${Config.localtunnel}/menuitems`;
+    const result = await fetch(url);
+    const resultJson = await result.text();
+    setMenuItems(JSON.parse(resultJson));
   }
+
+  // async function getMenuItems() {
+  //   const url = `${Config.localtunnel}/menuItems`;
+  //   const result = await fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       restaurant: `${props.restaurant}`,
+  //     }),
+  //   });
+  //   const resultJson = await result.json();
+  //   setMenuItems(resultJson);
+  // }
 
   useEffect(() => {
     getMenuItems();
@@ -71,7 +78,7 @@ export default function RestaurantView(props) {
       price={item.price}
     />
   );
-  if(menuItems) {
+  if(!(Object.keys(menuItems).length === 0)) {
   return (
     <View style={[styles.container]}>
       <View style={[styles.item]}>
@@ -145,13 +152,13 @@ export default function RestaurantView(props) {
         {
           fd === "food" ?
           <FlatList
-          data={menuItems.filter(item => item.category === "Food")}
+          data={menuItems.filter(item => item.category === "Food").filter(item => item.restaurant === props.restaurant)}
           renderItem={renderItem}
           keyExtractor={item => item.name}
           style={styles.fl}
         /> :
         <FlatList
-          data={menuItems.filter(item => item.category === "Drink")}
+          data={menuItems.filter(item => item.category === "Drink".filter(item => item.restaurant === props.restaurant))}
           renderItem={renderItem}
           keyExtractor={item => item.name}
           style={styles.fl}
