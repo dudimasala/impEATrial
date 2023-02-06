@@ -16,6 +16,7 @@ import Search from "./frontend/components/preferences/Search";
 import Staff from "./frontend/pages/Staff";
 import Friends from "./frontend/pages/Friends";
 import Account from "./frontend/components/Account";
+import {LogBox} from 'react-native';
 const initPrefData = require('./backend/json/preferencestags.json');
 const initRestData = require('./backend/json/restaurantTags.json');
 
@@ -23,6 +24,7 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function App() {
 
+  LogBox.ignoreAllLogs();
   const [firstTime, setFirstTime] = useState(true);
 
   useEffect(() => {

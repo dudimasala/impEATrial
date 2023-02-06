@@ -158,7 +158,7 @@ export default function RestaurantView(props) {
           style={styles.fl}
         /> :
         <FlatList
-          data={menuItems.filter(item => item.category === "Drink".filter(item => item.restaurant === props.restaurant))}
+          data={menuItems.filter(item => item.category === "Drink").filter(item => item.restaurant === props.restaurant)}
           renderItem={renderItem}
           keyExtractor={item => item.name}
           style={styles.fl}

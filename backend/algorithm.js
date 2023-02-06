@@ -1,4 +1,3 @@
-// hi
 
 import prefTags from './json/preferencestags.json';
 

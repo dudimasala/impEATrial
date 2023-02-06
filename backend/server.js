@@ -68,7 +68,7 @@ function stringToArray(string) {
   if (string === undefined) {
     return '';
   }
-  return string.slice(1, string.length - 1).split(', ').map((elem) => elem.slice(1, elem.length - 1)).join(', ');
+  return string.slice(1, string.length - 1).toString().split(', ').map((elem) => elem.slice(1, elem.length - 1)).join(', ');
 }
 
 async function insertRestaurants() {
