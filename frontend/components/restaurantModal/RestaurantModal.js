@@ -49,7 +49,7 @@ export default function RestaurantView(props) {
   }
 
   // async function getMenuItems() {
-  //   const url = `${Config.localtunnel}/menuItems`;
+  //   const url = `${Config.localtunnel}/restaurants`;
   //   const result = await fetch(url, {
   //     method: 'POST',
   //     headers: {

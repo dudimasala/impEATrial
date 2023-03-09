@@ -68,7 +68,8 @@ function stringToArray(string) {
   if (string === undefined) {
     return '';
   }
-  return string.slice(1, string.length - 1).toString().split(', ').map((elem) => elem.slice(1, elem.length - 1)).join(', ');
+  return string.toString().split(', ').map((elem) => elem.toLowerCase()).join(', ');
+  
 }
 
 async function insertRestaurants() {
@@ -120,7 +121,7 @@ function deleteEverything() {
   client.query('DELETE FROM restaurants');
 }
 
-initDB();
+// initDB();
 
 // deleteEverything();
 

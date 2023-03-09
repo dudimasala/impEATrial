@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Switch } from 'react-native';
 import {Entypo, FontAwesome5} from 'react-native-vector-icons';
 import SearchBar from "react-native-dynamic-search-bar";
@@ -6,6 +6,7 @@ import checkbox from '../../assets/icon-checkbox.png';
 import checkboxChecked from '../../assets/icon-checkbox-checked.png';
 import axios from 'axios';
 import Config from '../../../backend/config';
+const initData = require('../../../backend/json/restaurantTags.json')
 
 const client = axios.create({
   headers: {
@@ -14,9 +15,9 @@ const client = axios.create({
   },
 });
 
-export default function InsertMenu() {
+export default function InsertMenu(props) {
    const [userInput, setUserInput] = useState("");
-   const [userInput2, setUserInput2] = useState("");
+   const [userInput2, setUserInput2] = useState(0.0);
    const [gf, setGf] = useState(false);
    const [v, setV] = useState(false);
    const [vg, setVg] = useState(false);
@@ -24,8 +25,8 @@ export default function InsertMenu() {
    const [ingredient, setIngredient] = useState();
    const [cuisine, setCuisine] = useState();
    const [flavour, setFlavour] = useState();
-
-  async function generateTags() {
+  
+   async function generateTags() {
     const params = {
       prompt: `Give me the two main ingredients, main cuisine, and main flavour of a '${userInput}' in the format ["ingredient 1", "ingredient 2", "cuisine", "flavour"]`,
       model: 'text-davinci-003',
@@ -48,9 +49,12 @@ export default function InsertMenu() {
       });
   }
 
+
   async function updateDatabase() {
     const url = `${Config.localtunnel}/menuitems`;
     const tagsCommaSeparated = [food, ingredient, cuisine, flavour].join(', ');
+    
+
     const result = await fetch(url, {
       method: 'POST',
       headers: {
@@ -58,32 +62,20 @@ export default function InsertMenu() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        restaurant: 'Kimiko',
+        restaurant: props.rest,
         item: userInput,
         price: userInput2,
         glutenFree: gf,
-        vegan: vg,
-        vegetarian: v,
+        vegetarian: vg,
+        vegan: v,
         tags: tagsCommaSeparated,
-        nutrients: 'Fats, Carbohydrates, Carbohydrates, Carbohydrates',
+        nutrients: 'Fats, Carbohydrates, Magnesium, Iron',
       }),
     });
     const resultJson = await result.json();
     console.log(`Item inserted: ${userInput}`);
-    const testURL = `${Config.localtunnel}/testInsert`;
-    const test = await fetch(testURL, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        item: userInput,
-      }),
-    });
-    const testJSON = await test.json();
-    console.log(testJSON);
   }
+
 
    const changeText = (input) => {
     setUserInput(input);
@@ -134,7 +126,7 @@ export default function InsertMenu() {
         <View>
             <TouchableOpacity style={[styles.item]} onPress={generateTags}>
                 <Text style = {styles.title}>
-                Generate Hashtags
+                Generate tags
                 </Text> 
             </TouchableOpacity>
         <View style = {styles.container}>
@@ -146,7 +138,7 @@ export default function InsertMenu() {
                  </View>
                  <View style={[styles.ft2]}>
                     <Text style = {styles.filterTag}>
-                      { ingredient ? ingredient : `Ingredient`}
+                      { ingredient ? ingredient : `Ingredient?`}
                     </Text> 
                  </View>
             </View>
@@ -165,7 +157,7 @@ export default function InsertMenu() {
         </View>
         <TouchableOpacity style={[styles.item]} onPress={() => updateDatabase()}>
             <Text style = {styles.title}>
-              Update Database
+              Update database
             </Text> 
         </TouchableOpacity>
         </View>

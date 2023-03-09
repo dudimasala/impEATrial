@@ -1,4 +1,3 @@
-
 import prefTags from './json/preferencestags.json';
 
 function getMissingNutrientsScore(menuItem, missingNutrients) {
@@ -22,16 +21,20 @@ function getMissingNutrientsScore(menuItem, missingNutrients) {
 }
 
 function getPreferencesScore(menuItem, preferences) {
-  const checkedTags = prefTags.filter((tag) => tag.id <= preferences.length && preferences[tag.id - 1]).map((tag) => tag.name.toLowerCase());
+  let checkedTags = prefTags.filter((tag) => tag.id <= preferences.length && preferences[tag.id -1]).map((tag) => tag.name.toLowerCase())
 
-  const result = menuItem.tags.split(', ').filter((tag) => checkedTags.indexOf(tag) > -1).length;
-  return result;
+  const prefItem = menuItem.tags.split(',');
+
+  let intersection = checkedTags.filter(function(value) {
+    return (prefItem).includes(value);
+  });
+  return intersection.length;
 }
 
 function score(menuItem, missingNutrients, preferences) {
   const missingNutrientsScore = getMissingNutrientsScore(menuItem, missingNutrients);
   const preferencesScore = getPreferencesScore(menuItem, preferences);
-  const totalScore = missingNutrientsScore + 50 * preferencesScore;
+  const totalScore = missingNutrientsScore + 100 * preferencesScore;
   return totalScore;
 }
 
@@ -67,11 +70,11 @@ export default function rankMenuItems(menuItems, nutrients, recommendation, pref
     function contains(array, elem) {
       return array.indexOf(elem) > -1;
     }
-    const tags = item.tags.split(", ").map((tag) => tag.toLowerCase());
-    return contains(tags, 'savoury') || contains(tags, 'savory') || contains(tags, 'spicy') || contains(tags, 'bitter');
+    const tags = item.tags.split(',');
+    return !contains(tags, 'sweet');
   });
   const savourySpicyBitterAndFillingMenuItems = savourySpicyBitterMenuItems.filter(
-    (item) => item.price >= 4,
+    (item) => item.price >= 0
   );
   const ranked = savourySpicyBitterAndFillingMenuItems.sort(
     (a, b) =>

@@ -26,44 +26,40 @@ router.get('/menuitems', (req, res) => {
 router.post('/menuitems', (req, res) => {
   const client = new Client(Config.db);
   client.connect();
-  const {
-    restaurant, item, price, glutenFree, vegetarian, vegan, tags, nutrients,
-  } = req.body;
+  
+  console.log(req.body);
   client.query(
     `INSERT INTO menuitems
      SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, NULL
      WHERE NOT EXISTS (SELECT * FROM menuitems WHERE restaurant = $1 AND item = $2)`,
     [
-      restaurant,
-      item,
+      req.body.restaurant,
+      req.body.item,
       'Food',
-      price,
-      glutenFree,
-      vegetarian,
-      vegan,
-      tags,
-      nutrients,
-    ],
-    (err, response) => {
-      if (err) {
-        res.end(JSON.stringify('Error'));
-      } else {
-        res.end(JSON.stringify('Success'));
-      }
-    },
+      req.body.price,
+      req.body.glutenFree,
+      req.body.vegetarian,
+      req.body.vegan,
+      req.body.tags,
+      req.body.nutrients
+    ], (err, response) => {
+      if (err) throw err;
+      console.log('inserted')
+      res.end("data inserted");
+      },
   );
 });
 
-router.post('/testInsert', (req, res) => {
-  const client = new Client(Config.db);
-  client.connect();
-  const { item } = req.body;
-  client.query('SELECT * FROM menuitems WHERE item = $1', [item], (err, response) => {
-    if (err) throw err;
-    const { rows } = response;
-    res.end(JSON.stringify(rows));
-  });
-});
+// router.post('/testInsert', (req, res) => {
+//   const client = new Client(Config.db);
+//   client.connect();
+//   const { item } = req.body;
+//   client.query('SELECT * FROM menuitems WHERE item = $1', [item], (err, response) => {
+//     if (err) throw err;
+//     const { rows } = response;
+//     res.end(JSON.stringify(rows));
+//   });
+// });
 
 // Returns the menu items served by the specified restaurant
 router.post('/restaurants', (req, res) => {

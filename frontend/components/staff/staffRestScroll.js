@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SearchBar from "react-native-dynamic-search-bar";
 import Item from "./staffItem";
+const initData = require('../../../backend/json/restaurantTags.json')
 
 export default function StaffRestScroll(props) {
 
@@ -24,7 +25,13 @@ export default function StaffRestScroll(props) {
       getData(); 
       setBootedUp(true);
     }
-  })
+    initData.forEach((item) => {
+      if (props.checkedRest[item.id - 1]) {
+        props.setRest(item.name);
+        console.log(item.name)
+      }
+    })
+   })
 
 
   const [fullData, setFullData] = useState();
